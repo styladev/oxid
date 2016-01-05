@@ -6,7 +6,7 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 1. Place the *StylaFeed* and *StylaSEO* folders under the modules directory inside the *modules* directory on your OXID installation.
 
-2. Activate both plugins via the OXID admin interface under **Extensions -> Module Settings**:
+2. Activate both plugins via the OXID admin interface under settings **Extensions -> Modules**:
 ![Activate Feed Plugin](/readme/readme_activate_feed.png)
 ![Activate Seo Plugin](/readme/readme_activate_seo.png)
 
