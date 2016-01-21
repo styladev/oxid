@@ -34,7 +34,7 @@ class StylaFeed_Output extends oxUBase{
         }
 
         oxRegistry::getUtils()->showMessageAndExit(
-                $oSmarty->fetch($this->_sThisTemplate, $this->getViewId())
+            $oSmarty->fetch($this->_sThisTemplate, $this->getViewId())
         );
 
     }
@@ -93,13 +93,17 @@ class StylaFeed_Output extends oxUBase{
         $sku = oxRegistry::getConfig()->getRequestParameter('sku');
 
         if(!$product_data = $this->util->loadFromCache('stylafeed_article-'.$sku)){
-            /** @var oxArticle $oArticle */
-            $oArticle = oxNew('oxarticle');
-            $sSelect = $oArticle->buildSelectString(array('oxartnum' => $sku));
-            if(!$oArticle->assignRecord($sSelect)){
-                $this->err = 'PRODUCT NOT FOUND';
-                return;
+            $oArticle = oxNew('oxArticle');
+
+            // try to load the article by OXID first
+            if (!$oArticle->load($sku)) {
+                $sSelect = $oArticle->buildSelectString(array('oxartnum' => $sku));
+                if(!$oArticle->assignRecord($sSelect)){
+                    $this->err = 'PRODUCT NOT FOUND';
+                    return;
+                }
             }
+
             $product_data = $this->_getProductDetails($oArticle);
             $this->util->saveToCache('stylafeed_article-'.$sku, $product_data);
         }
@@ -146,6 +150,8 @@ class StylaFeed_Output extends oxUBase{
         foreach ($oList as $oArticle) {
             $oItem = array();
             $oActCur = $this->getConfig()->getActShopCurrencyObject();
+            $oActCur->thousand = ''; // SMO-7 No thousand separator
+            $oActCur->dec = '.'; // SMO-7 dec separator fixed to '.'
 
             $sPrice = '';
             $sFinalPrice = '';
@@ -161,7 +167,7 @@ class StylaFeed_Output extends oxUBase{
                 $category->load($cat_id);
                 $oItem['category'][] = $category->oxcategories__oxtitle->value;
             }
-            $oItem["sku"] = $oArticle->oxarticles__oxartnum->value;
+            $oItem["sku"] = $oArticle->getId();
             $oItem["name"] = $this->_filterText($oArticle->oxarticles__oxtitle->value);
             $oItem["description"] = $this->_filterText($oArticle->getLongDesc());
             $oItem["shortdescription"] =  $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
@@ -222,6 +228,8 @@ class StylaFeed_Output extends oxUBase{
         $myUtilsUrl = oxRegistry::get("oxUtilsUrl");
         $oLang = oxRegistry::getLang();
         $oActCur = $this->getConfig()->getActShopCurrencyObject();
+        $oActCur->thousand = ''; // SMO-7 No thousand separator
+        $oActCur->dec = '.'; // SMO-7 dec separator fixed to '.'
 
         $data = array();
 
@@ -236,11 +244,19 @@ class StylaFeed_Output extends oxUBase{
         $data["maxqty"] = $oArticle->oxarticles__oxstock->value;
         $data["price"] = $sPrice;
         $data["finalprice"] = $finalPrice;
+
+        // Show old price if it is a single article with no variants
+        if($oArticle->oxarticles__oxvarcount->value == 0){
+            if ($oTPrice = $oArticle->getTPrice()) {
+                $data["oldprice"] = $oLang->formatCurrency($oTPrice->getBruttoPrice(), $oActCur);
+            }
+        }
+
         $data["name"] = $this->_filterText($oArticle->oxarticles__oxtitle->value);
         $data["description"] = $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
         $data["pageUrl"] = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
         $data["saleable"] = !$oArticle->isNotBuyable(); // Currently only active and in stock items are returned
-        if ($oArticle->getVariantsCount() < 0) {
+        if (!$oArticle->isVariant()) {
             $data["attributes"] = $this->_getVariantsData($oArticle);
         }
 
@@ -285,6 +301,9 @@ class StylaFeed_Output extends oxUBase{
                 $sProductId = $oVariant->getId();
                 $oLang = oxRegistry::getLang();
                 $oActCur = oxRegistry::getConfig()->getActShopCurrencyObject();
+                $oActCur->thousand = ''; // SMO-7 No thousand separator
+                $oActCur->dec = '.'; // SMO-7 dec separator fixed to '.'
+
                 $sPrice = '';
                 $sTPrice = '';
                 if ($oPrice = $oVariant->getPrice()) {
