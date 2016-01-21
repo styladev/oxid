@@ -1,3 +1,3 @@
 <?php
 $this->applicationId = 'STYLASEO';
-$this->moduleVersion = '1.0.7';
+$this->moduleVersion = '1.1.0';

@@ -1,12 +1,12 @@
 <?php
-$sMetadataVersion = '1.0.7';
+$sMetadataVersion = '1.1.0';
 
 $aModule = array(
     'id'          => 'StylaSEO',
     'title'       => 'Styla SEO Enhancements',
     'description' => 'Generating HTML & metadata for better SEO throughout magazine, tag, story pages from Amazine/Styla',
     'thumbnail'   => 'logo.png',
-    'version'     => '1.0.7',
+    'version'     => '1.1.0',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
