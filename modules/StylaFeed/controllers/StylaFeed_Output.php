@@ -256,7 +256,8 @@ class StylaFeed_Output extends oxUBase{
         $data["description"] = $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
         $data["pageUrl"] = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
         $data["saleable"] = !$oArticle->isNotBuyable(); // Currently only active and in stock items are returned
-        if (!$oArticle->isVariant()) {
+        # Here check for getVariantsCount instead of !$oArticle->isVariant() - otherwise attributes is set even for simple products ...
+        if ($oArticle->getVariantsCount() < 0) {
             $data["attributes"] = $this->_getVariantsData($oArticle);
         }
 
