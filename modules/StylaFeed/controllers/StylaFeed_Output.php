@@ -174,7 +174,8 @@ class StylaFeed_Output extends oxUBase{
             $oItem["price"] = $sFinalPrice;
             $oItem["amount"] = $sPrice;
             $oItem["url"] = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
-            $oItem["saleable"] = !$oArticle->isNotBuyable(); // Currently only active and in stock items are returned
+            $oItem["saleable"] = $oArticle->oxarticles__oxstock->value > 0; // Currently only active and in stock items are returned
+            $oItem["type_id"] = $this->_hasVariants($oArticle) ? "configurable" : "simple";
 
             $oItem["image_org"] = $oArticle->getPictureUrl();
             $imgname = $oArticle->oxarticles__oxpic1->value;
@@ -240,10 +241,12 @@ class StylaFeed_Output extends oxUBase{
         }
 
         $data["id"] = $oArticle->getId();
-        $data["minqty"] = 1;
-        $data["maxqty"] = $oArticle->oxarticles__oxstock->value;
         $data["price"] = $sPrice;
         $data["finalprice"] = $finalPrice;
+
+        # Currently we only use saleable true / false as indicator not the qty, but maybe for the future
+        #$data["minqty"] = 1;
+        #$data["maxqty"] = $oArticle->oxarticles__oxstock->value;
 
         // Show old price if it is a single article with no variants
         if($oArticle->oxarticles__oxvarcount->value == 0){
@@ -255,11 +258,14 @@ class StylaFeed_Output extends oxUBase{
         $data["name"] = $this->_filterText($oArticle->oxarticles__oxtitle->value);
         $data["description"] = $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
         $data["pageUrl"] = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
-        $data["saleable"] = !$oArticle->isNotBuyable(); // Currently only active and in stock items are returned
-        # Here check for getVariantsCount instead of !$oArticle->isVariant() - otherwise attributes is set even for simple products ...
-        if ($oArticle->getVariantsCount() < 0) {
+        $data["saleable"] = $oArticle->oxarticles__oxstock->value > 0; // Currently only active and in stock items are returned
+        $hasVariants = $this->_hasVariants($oArticle);
+        if ($hasVariants) {
             $data["attributes"] = $this->_getVariantsData($oArticle);
+            # Update top-level saleable depeding on if any variant is saleable
+            $data["saleable"] = $this->_isParentProductSaleable($data);
         }
+        $data["type"] = $hasVariants ? "configurable" : "simple";
 
         $extra_attrs = $this->getConfig()->getConfigParam('styla_extra_attributes');
         if($extra_attrs){
@@ -271,6 +277,39 @@ class StylaFeed_Output extends oxUBase{
             }
         }
         return $data;
+    }
+
+    /**
+     * Check all variants if one is saleable.
+     *
+     * @param $data
+     * @return bool
+     */
+    protected function _isParentProductSaleable($data) {
+        foreach ($data["attributes"] as $attrKey => $attrVal) {
+            foreach ($attrVal["options"] as $optionsKey => $optionsVal) {
+                foreach ($optionsVal["products"] as $productKey => $productVal) {
+                    if ($productVal["saleable"] == TRUE) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true or false if product has variants or not (since $oArticle->hasVariants() always returns true).
+     *
+     * @param $oArticle
+     * @return boolean
+     */
+    protected function _hasVariants($oArticle) {
+        $aVarNames = explode('|', $oArticle->oxarticles__oxvarname->value);
+        foreach ($aVarNames as $sKey => $sVarName) {
+            if (trim($sVarName) != '') return true;
+        }
+        return false;
     }
 
     /**
@@ -324,7 +363,7 @@ class StylaFeed_Output extends oxUBase{
                         $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['id'] = $sProductId;
                         $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['price'] = $sPrice;
                         $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['oldPrice'] = $sTPrice;
-                        $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['saleable'] = $oVariant->isBuyable();
+                        $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['saleable'] = $oVariant->oxarticles__oxstock->value > 0;
                     }
                 }
             }
