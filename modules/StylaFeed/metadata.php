@@ -1,13 +1,13 @@
 <?php
 
-$sMetadataVersion = '1.1.0';
+$sMetadataVersion = '1.1.1';
 
 $aModule = array(
     'id'          => 'StylaFeed',
     'title'       => 'Styla Feed',
     'description' => 'Styla Feed Module provides a product api to add products to the stories.',
     'thumbnail'   => 'logo.png',
-    'version'     => '1.1.0',
+    'version'     => '1.1.1',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
