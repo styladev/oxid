@@ -41,6 +41,20 @@ class StylaSEO_Output extends oxUBase{
         return $this->_ret['page_title'];
     }
 
+    /**
+     * Returns the standard OXID page title if the corresponding setting is checked.
+     * Returns only the Styla title otherwise
+     *
+     * @return string
+     */
+    public function getPageTitle(){
+        if ($this->getConfig()->getConfigParam('styla_seo_magazin_title')) {
+            return parent::getPageTitle();
+        }
+
+        return $this->getTitle();
+    }
+
     public function getCanonicalUrl(){
         return $this->_ret['canonical_url'];
     }
@@ -68,10 +82,9 @@ class StylaSEO_Output extends oxUBase{
 
             $this->_aViewData['js_embed'] = $this->_util->getJsEmbedCode($this->_username, $this->_snippet_url);
             $this->_aViewData['noscript_content'] = $ret['noscript_content'];
-            $this->_aViewData['meta_og'] = $ret['meta']['og'];
-            $this->_aViewData['meta_fb_app_id'] = $ret['meta']['fb_app_id'];
-            $this->_aViewData['meta_author'] = $ret['author'];
+            $this->_aViewData['meta_author'] = $ret['meta']['author'];
             $this->_aViewData['feed_type'] = $type;
+            $this->_aViewData['meta'] = $ret['meta'];
         }
 
 

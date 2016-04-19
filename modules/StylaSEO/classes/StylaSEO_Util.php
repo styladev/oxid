@@ -3,6 +3,7 @@
 class StylaSEO_Util{
 
     const STYLA_URL = 'http://live.styla.com/';
+    const SEO_URL = 'http://seo.styla.com';
     protected static $_username = '';
     protected static $_res = '';
 
@@ -53,12 +54,9 @@ class StylaSEO_Util{
         if(!$src_url)
             $src_url =  self::STYLA_URL;
 
+        $src_url = rtrim($src_url, '/').'/';
         $type = $params['type'];
         self::$_username = $username;
-
-        if (!self::endsWith($src_url, "/")) {
-            $src_url = $src_url . "/";
-        }
 
         if($type=='tag')
             $url = $src_url . 'user/'.$username.'/tag/'.$params['tagname'];
@@ -74,7 +72,7 @@ class StylaSEO_Util{
         $cache_key = preg_replace('/[\/:]/i','-','stylaseo_'.$url);
 
         if(!$arr = $this->loadFromCache($cache_key)){
-            $arr = self::_loadRemoteContent($url, $type);
+            $arr = $this->_loadRemoteContent($url, $type);
             if(!$arr)
                 return;
 
@@ -84,109 +82,90 @@ class StylaSEO_Util{
         return $arr;
     }
 
-
-
-    private static function _loadRemoteContent($url, $type = null){
-
+    protected function _loadRemoteContent($url, $type = null)
+    {
         try{
-            $curl = oxNew('StylaSEO_Curl');
-            $curl->setUrl($url);
-            $curl->setOption('CURLOPT_POST', 0);
-            $curl->setOption('CURLOPT_HEADER', 0);
-            $curl->setOption('CURLOPT_HTTPHEADER', array('OXID Styla SEO Module for ' . self::$_username));
-            $curl->setOption('CURLOPT_FRESH_CONNECT', 1);
-            $curl->setOption('CURLOPT_RETURNTRANSFER', 1);
-            $curl->setOption('CURLOPT_FORBID_REUSE', 1);
-            $curl->setOption('CURLOPT_TIMEOUT', 60);
-            $curl->setOption('CURLOPT_SSL_VERIFYPEER', 0);
-            $curl->setOption('CURLOPT_SSL_VERIFYHOST', 0);
-            $curl->setOption('CURLOPT_USERPWD', null);
+            return $this->_getMetadata();
 
-            if(!self::$_res = $curl->execute())
-                return false;
-
-            $ret = array();
-            $ret['meta'] = array();
-
-            /** DEFAULT SET OF METADATA  */
-            // Noscript content
-            if(preg_match('/<noscript>(.*)<\/noscript>/is', self::$_res, $matches)){
-                $ret['noscript_content'] = $matches[1];
-            }
-
-            // Meta description
-            $ret['meta']['description'] = self::_getMetadataValueByName('description');
-
-            // Page title
-            if(preg_match('/<title>(.*)<\/title>/is', self::$_res, $matches)){
-                $ret['page_title'] = $matches[1];
-            }
-
-            // Canonical link
-            if(preg_match('/(<link rel="canonical"[^>]* href="([^"]+)"[^>]*>)/is', self::$_res, $matches)){
-                $ret['canonical_url'] = $matches[2];
-            }
-
-            if($type == 'user' || $type == 'magazine' || $type == 'story'){
-
-                // Facebook & opengraph tags
-                $ret['meta']['fb_app_id'] = self::_getMetadataTagsByProperty('fb:app_id');
-                $ret['meta']['og'] = self::_getMetadataTagsByProperty('og:(.*?)'); // Regex: Everything starting with og:
-
-                // Author link
-                if(preg_match('/(<link rel="author"[^>]+>)/is', self::$_res, $matches)){
-                    $ret['author'] = $matches[1];
-                }
-            }
-
-            if($type == 'story'){
-                // Meta keywords
-                $ret['meta']['keywords'] = self::_getMetadataValueByProperty('keywords');
-            }
-            return $ret;
-
-        }catch (Exception $e){
-            echo 'ERROR: '.$e->getMessage().' url:'.$url;
+        } catch (Exception $e) {
+            echo 'ERROR: ' . $e->getMessage() . ' url:' . $url;
             return false;
         }
-
-
-
     }
 
-    private static function _getMetadataValueByName($name){
-        return self::_getMetadataValue('name', $name);
-    }
+    /**
+     * Adds meta properties to the given array and returns it
+     *
+     * @return array
+     */
+    protected function _getMetadata()
+    {
+        $ret = array();
 
-    private static function _getMetadataValueByProperty($property){
-        return self::_getMetadataValue('property', $property);
-    }
+        $seoServerUrl = oxRegistry::getConfig()->getConfigParam('styla_seo_server');
+        if (!$seoServerUrl) $seoServerUrl = self::SEO_URL;
 
-    private static function _getMetadataTagsByProperty($property){
-        return self::_getMetadataTags('property', $property);
-    }
+        $basedir = oxRegistry::getConfig()->getConfigParam('styla_seo_basedir');
+        if (!$basedir) $basedir = StylaSEO_Setup::STYLA_BASEDIR;
 
-    private static function _getMetadataValue($type, $key){
-        if(preg_match('/<meta [^>]*'.$type.'="'.$key.'" (.*?)content="([^"]+)"\W?\/>/is', self::$_res, $matches)){
-            return $matches[2];
+        // Should be filled, StylaSEO_Output checks this already
+        $username = oxRegistry::getConfig()->getConfigParam('styla_username');
+
+        // Get the correct url for the server's url parameter
+        $request = oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI');
+        $request = substr($request, strpos($request, $basedir) + strlen($basedir) + 1);
+        $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . $request;
+
+        if (!$_res = $this->_getCurlResult($url)) {
+            return $ret;
         }
+
+        $result = json_decode($_res);
+        if (isset($result->tags) && count($result->tags)) {
+            $ret['meta'] = array();
+            foreach ($result->tags as $tag) {
+                if (in_array($tag->tag, array('link', 'meta'), true)) {
+                    $ret['meta'][] = $tag;
+
+                    if (isset($tag->attributes->name)
+                        && in_array($tag->attributes->name, array('description', 'keywords', 'canonical', 'author'), true)
+                    ) {
+                        $ret['meta'][$tag->attributes->name] = $tag->attributes->content;
+                    }
+                } elseif ($tag->tag === 'title') {
+                    $ret['page_title'] = $tag->content;
+                }
+            }
+        }
+
+        if (isset($result->html->body)) {
+            $ret['noscript_content'] = $result->html->body;
+        }
+
+        return $ret;
     }
 
-    private static function _getMetadataTags($type, $key){
-        if(preg_match_all('/(<meta [^>]*'.$type.'="'.$key.'" (.*?)content="([^"]+)"\W?\/>)+/is', self::$_res, $matches)){
-            $ret = $matches[0];
-            if(!is_array($ret))
-                return false;
+    /**
+     * Helper method: returns StylaSEO_Curl result for given URL
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function _getCurlResult($url)
+    {
+        $curl = oxNew('StylaSEO_Curl');
+        $curl->setUrl($url);
+        $curl->setOption('CURLOPT_POST', 0);
+        $curl->setOption('CURLOPT_HEADER', 0);
+        $curl->setOption('CURLOPT_HTTPHEADER', array('OXID Styla SEO Module for ' . self::$_username));
+        $curl->setOption('CURLOPT_FRESH_CONNECT', 1);
+        $curl->setOption('CURLOPT_RETURNTRANSFER', 1);
+        $curl->setOption('CURLOPT_FORBID_REUSE', 1);
+        $curl->setOption('CURLOPT_TIMEOUT', 60);
+        $curl->setOption('CURLOPT_SSL_VERIFYPEER', 0);
+        $curl->setOption('CURLOPT_SSL_VERIFYHOST', 0);
+        $curl->setOption('CURLOPT_USERPWD', null);
 
-            return implode("\r\n", $ret);
-        }
-    }
-
-    function endsWith($haystack, $needle){
-        $length = strlen($needle);
-        if ($length == 0) {
-            return true;
-        }
-        return (substr($haystack, -$length) === $needle);
+        return $curl->execute();
     }
 }

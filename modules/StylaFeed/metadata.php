@@ -13,7 +13,8 @@ $aModule = array(
     'email'       => 'info@noriskshop.de',
 
     'extend'      => array(
-        'oxconfig'  => 'StylaFeed/classes/StylaFeed_Config'
+        'oxconfig'      => 'StylaFeed/classes/StylaFeed_Config',
+        'module_config' => 'StylaFeed/classes/StylaFeed_Module_Config',
     ),
 
     'files' => array(
