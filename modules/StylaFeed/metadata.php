@@ -7,13 +7,14 @@ $aModule = array(
     'title'       => 'Styla Feed',
     'description' => 'Styla Feed Module provides a product api to add products to the stories.',
     'thumbnail'   => 'logo.png',
-    'version'     => '1.1.1',
+    'version'     => '1.2.0',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
 
     'extend'      => array(
-        'oxconfig'  => 'StylaFeed/classes/StylaFeed_Config'
+        'oxconfig'      => 'StylaFeed/classes/StylaFeed_Config',
+        'module_config' => 'StylaFeed/classes/StylaFeed_Module_Config',
     ),
 
     'files' => array(

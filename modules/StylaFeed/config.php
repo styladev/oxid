@@ -1,3 +1,3 @@
 <?php
 $this->applicationId = 'STYLAFEED';
-$this->moduleVersion = '1.1.1';
+$this->moduleVersion = '1.2.0';

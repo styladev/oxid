@@ -15,3 +15,12 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 4. Configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed plugin (please send this to your account manager - so we can enable your products in the styla editor):
 ![Configurate Api Key](/readme/readme_api_key.png)
+
+## Release Notes
+
+### V1.2.0
+- Task: Meta title is not replaced correctly
+- Task: Use seo server to fetch content
+- Task: Generate a random api key
+- Task: Styla Patch in Version einbinden
+

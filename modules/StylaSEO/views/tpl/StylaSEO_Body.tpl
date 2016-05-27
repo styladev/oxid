@@ -1,21 +1,20 @@
 [{capture append="oxidBlock_pageHead"}]
 
-    [{if $feed_type == 'user' || $feed_type == 'magazine' || $feed_type == 'story'}]
-        [{$meta_fb_app_id}]
-        [{$meta_og}]
-    [{/if}]
-
-    [{if $feed_type == 'user' || $feed_type == 'magazine'}]
-        [{$meta_author}]
-    [{/if}]
+    [{foreach from=$meta item=entry}]
+        [{if $entry->attributes->property}]
+            [{* Prints special meta tags (FB, Twitter) *}]
+            <[{$entry->tag}] property="[{$entry->attributes->property}]" content="[{$entry->attributes->content}]" />
+        [{elseif $entry->attributes->rel}]
+            [{* Prints link tags *}]
+            <[{$entry->tag}] rel="[{$entry->attributes->rel}]" type="[{$entry->attributes->type}]" href="[{$entry->attributes->href}]" />
+        [{/if}]
+    [{/foreach}]
 
 [{/capture}]
 
 [{capture append="oxidBlock_content"}]
     [{$js_embed}]
-    <noscript>
-        [{$noscript_content}]
-    </noscript>
+    [{$noscript_content}]
 
 [{/capture}]
 [{include file="layout/page.tpl"}]
