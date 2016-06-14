@@ -18,6 +18,12 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 ## Release Notes
 
+### V1.3.0
+- Extension: Moving the Styla snippet into the `<head>``
+- Extension: Version Endpoint
+- Extension: API Key
+- Bugfix: StylaFeed - _getProductDetails wrong check for parent article- Bufix
+
 ### V1.2.0
 - Task: Meta title is not replaced correctly
 - Task: Use seo server to fetch content
