@@ -71,6 +71,14 @@ class StylaSEO_Router extends StylaSEO_Router_parent{
             );
         }
 
+        // showCategory can override showUser
+        if (getStr()->strpos($sSeoUrl, 'version') !== false) {
+            return array(
+                'cl' => 'StylaSEO_Output',
+                'fnc' => 'getPluginVersion',
+            );
+        }
+
         return false;
     }
 }

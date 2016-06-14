@@ -81,6 +81,7 @@ class StylaSEO_Output extends oxUBase{
             }
 
             $this->_aViewData['js_embed'] = $this->_util->getJsEmbedCode($this->_username, $this->_snippet_url);
+            $this->_aViewData['css_embed'] = $this->_util->getCssEmbedCode($this->_username, $this->_snippet_url);
             $this->_aViewData['noscript_content'] = $ret['noscript_content'];
             $this->_aViewData['meta_author'] = $ret['meta']['author'];
             $this->_aViewData['feed_type'] = $type;
@@ -130,5 +131,31 @@ class StylaSEO_Output extends oxUBase{
         }
 
         $this->_feed_params = array('type' => 'category', 'username' => $username, 'category' => $category);
+    }
+
+    /**
+     * getPluginVersion
+     * -----------------------------------------------------------------------------------------------------------------
+     * entry point getVersion API
+     *
+     * @compatibleOxidVersion 5.2.x
+     *
+     */
+    public function getPluginVersion()
+    {
+        // get version from metadata
+        $oModule = oxNew('oxmodule');
+        $oModule->load('StylaSEO');
+        $sVersionSEO = $oModule->getInfo('version');
+
+        $oModule = oxNew('oxmodule');
+        $oModule->load('StylaFeed');
+        $sVersionFEED = $oModule->getInfo('version');
+
+        $aData = array('version_StylaSEO' => $sVersionSEO,
+                        'version_StylaFeed' => $sVersionFEED,
+        );
+
+        die(json_encode($aData));
     }
 }

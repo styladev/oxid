@@ -22,7 +22,11 @@ class StylaFeed_Output extends oxUBase{
 
     public function render(){
         parent::render();
+        if ($this->err == 'API KEY INVALID') {
+            oxRegistry::getUtils()->setHeader("HTTP/1.0 401 Unauthorized");
+        }
         oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . oxRegistry::getLang()->translateString("charset"));
+
         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
 
         $this->_aViewData['errmsg'] = $this->err;
@@ -87,6 +91,8 @@ class StylaFeed_Output extends oxUBase{
     }
 
     public function showProduct(){
+        $this->_checkApiKey();
+
         if($this->err)
             return;
 
@@ -134,7 +140,7 @@ class StylaFeed_Output extends oxUBase{
     }
 
     public function _checkApiKey(){
-        $api_key = oxRegistry::getConfig()->getRequestParameter('key');
+        $api_key = oxRegistry::getConfig()->getRequestParameter('apikey');
         if($api_key=='' || $api_key != $this->getConfig()->getConfigParam('styla_api_key')){
             $this->err = 'API KEY INVALID';
         }
