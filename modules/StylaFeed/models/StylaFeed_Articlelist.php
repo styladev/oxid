@@ -2,7 +2,16 @@
 
 class StylaFeed_Articlelist extends oxArticleList{
 
-    public function loadArticles($currPage=1, $pageSize=10, $skuFilter='', $categoryFilter=''){
+    /**
+     * Loads all relevant articles into the current list object
+     *
+     * @param int    $currPage The current page
+     * @param int    $pageSize The page size
+     * @param string $skuFilter A single SKU / OXARTNUM
+     * @param string $categoryFilter A single oxcategory ID
+     */
+    public function loadArticles($currPage = 1, $pageSize = 10, $skuFilter = '', $categoryFilter = '')
+    {
         //has module?
         $myConfig = $this->getConfig();
 
@@ -57,7 +66,7 @@ class StylaFeed_Articlelist extends oxArticleList{
         $selectString = $sSelect.$sJoin.$sWhere.$sOrder;
         $this->_aSqlLimit[0] = $iStart;
         $this->_aSqlLimit[1] = $iLimit;
-        $this->selectString($selectString);
+        $this->selectString($selectString, $values);
     }
 
     public function selectString($sSql, $values=array()){

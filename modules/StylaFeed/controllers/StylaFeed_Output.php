@@ -140,7 +140,7 @@ class StylaFeed_Output extends oxUBase{
     }
 
     public function _checkApiKey(){
-        $api_key = oxRegistry::getConfig()->getRequestParameter('apikey');
+        $api_key = oxRegistry::getConfig()->getRequestParameter('key');
         if($api_key=='' || $api_key != $this->getConfig()->getConfigParam('styla_api_key')){
             $this->err = 'API KEY INVALID';
         }

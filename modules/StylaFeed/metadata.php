@@ -34,7 +34,7 @@ $aModule = array(
 
     'settings' => array(
         array('name' => 'styla_api_key', 'type' => 'str', 'value' => '', 'group' => 'styla_api', 'constraints' => '', 'position' => 1), // 6321424181
-        array('name' => 'styla_feed_basedir', 'type' => 'str', 'value' => 'amazinefeed', 'group' => 'styla_feed', 'constraints' => '', 'position' => 2),
+        array('name' => 'styla_feed_basedir', 'type' => 'str', 'value' => 'stylafeed', 'group' => 'styla_feed', 'constraints' => '', 'position' => 2),
         array('name' => 'styla_page_size', 'type' => 'str', 'value' => '10', 'group' => 'styla_feed', 'constraints' => '', 'position' => 3), //
         array('name' => 'styla_image_attribute', 'type' => 'str', 'value' => 'image', 'group' => 'styla_feed', 'constraints' => '', 'position' => 4), //
         array('name' => 'styla_image_width', 'type' => 'str', 'value' => '320', 'group' => 'styla_feed', 'constraints' => '', 'position' => 5), //

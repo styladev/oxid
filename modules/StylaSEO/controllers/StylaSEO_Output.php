@@ -6,17 +6,14 @@ class StylaSEO_Output extends oxUBase{
     protected $_iViewIndexState = VIEW_INDEXSTATE_INDEX;
     protected $_util;
     protected $_username        = null;
-    protected $_source_url      = null;
     protected $_snippet_url     = null;
     protected $_feed_params     = array();
     protected $_ret             = null;
 
     public function __construct(){
         $this->_username    = $this->getConfig()->getConfigParam('styla_username');
-        $this->_source_url  = $this->getConfig()->getConfigParam('styla_source_url');
-        $this->_snippet_url = $this->getConfig()->getConfigParam('styla_js_url');
 
-        $this->_source_url = rtrim($this->_source_url, '/').'/'; // make sure there is always (exactly 1) trailing slash
+        $this->_snippet_url = $this->getConfig()->getConfigParam('styla_js_url');
         $this->_snippet_url = rtrim($this->_snippet_url, '/').'/'; // make sure there is always (exactly 1) trailing slash
 
         if(empty($this->_username)){
@@ -66,8 +63,7 @@ class StylaSEO_Output extends oxUBase{
         if(!empty($this->_username)) {
             $type = $this->_feed_params['type'];
 
-            // TODO: metatags will here be fetched via filtering html input from curl, find better way about it
-            $ret = $this->_util->getRemoteContent($this->_username, $this->_feed_params, $this->_source_url);
+            $ret = $this->_util->getRemoteContent($this->_username, $this->_feed_params);
             $this->_ret = $ret;
 
             $this->setMetaDescription($ret['meta']['description']);

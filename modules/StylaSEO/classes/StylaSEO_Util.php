@@ -3,7 +3,7 @@
 class StylaSEO_Util{
 
     const STYLA_URL = 'http://cdn.styla.com';
-    const LIVE_STYLA_URL = 'http://live.styla.com';
+    const API_STYLA_URL = 'http://live.styla.com';
     const SEO_URL = 'http://seo.styla.com';
     protected static $_username = '';
     protected static $_res = '';
@@ -63,30 +63,27 @@ class StylaSEO_Util{
         return oxRegistry::getUtils()->toFileCache($this->_getCacheId($name), $aData);
     }
 
-    public function getRemoteContent($username, $params, $src_url = null){
+    public function getRemoteContent($username, $params){
 
-        if(!$src_url)
-            $src_url =  self::STYLA_URL;
-
-        $src_url = rtrim($src_url, '/').'/';
         $type = $params['type'];
         self::$_username = $username;
 
-        if($type=='tag')
-            $url = $src_url . 'user/'.$username.'/tag/'.$params['tagname'];
-        elseif($type=='story')
-            $url = $src_url . 'story/'.$params['storyname'];
-        elseif($type=='category')
-            $url = $src_url . 'user/' . $params['username'] . '/category/' . $params['category'];
-        elseif($type=='user')
-            $url = $src_url . 'user/'.$params['username'];
-        else
-            $url = $src_url.'user/'.$username; // magazine default
+        if ($type == 'tag') {
+            $url = 'user/' . $username . '/tag/' . $params['tagname'];
+        } elseif ($type == 'story') {
+            $url = 'story/' . $params['storyname'];
+        } elseif ($type == 'category') {
+            $url = 'user/' . $params['username'] . '/category/' . $params['category'];
+        } elseif ($type == 'user') {
+            $url = 'user/' . $params['username'];
+        } else {
+            $url = 'user/' . $username; // magazine default
+        }
 
         $cache_key = preg_replace('/[\/:]/i','-','stylaseo_'.$url);
 
         if(!$arr = $this->loadFromCache($cache_key)){
-            $arr = $this->_loadRemoteContent($url, $type);
+            $arr = $this->_loadRemoteContent();
             if(!$arr)
                 return;
 
@@ -96,13 +93,13 @@ class StylaSEO_Util{
         return $arr;
     }
 
-    protected function _loadRemoteContent($url, $type = null)
+    protected function _loadRemoteContent()
     {
         try{
             return $this->_getMetadata();
 
         } catch (Exception $e) {
-            echo 'ERROR: ' . $e->getMessage() . ' url:' . $url;
+            echo 'ERROR: ' . $e->getMessage();
             return false;
         }
     }
@@ -208,8 +205,13 @@ class StylaSEO_Util{
         }
         else {
             // get version from styla
-            $js_url = self::LIVE_STYLA_URL;
-            $url = $js_url . '/api/version/' . $username;
+            $api_url = oxRegistry::getConfig()->getConfigParam('styla_api_url');
+            if (!$api_url) {
+                $api_url = self::API_STYLA_URL;
+            }
+
+            $url = $api_url . '/api/version/' . $username;
+
             $sVersion = self::_getCurlResult($url);
 
             // save to cache
