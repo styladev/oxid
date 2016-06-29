@@ -91,7 +91,7 @@ class StylaFeed_Output extends oxUBase{
     }
 
     public function showProduct(){
-        $this->_checkApiKey();
+        // $this->_checkApiKey();
 
         if($this->err)
             return;
