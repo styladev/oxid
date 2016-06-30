@@ -12,9 +12,17 @@
 
 [{/capture}]
 
-[{capture append="oxidBlock_content"}]
+[{capture append="oxidBlock_pageHead"}]
     [{$js_embed}]
-    [{$noscript_content}]
-
+    [{$css_embed}]
 [{/capture}]
+
+[{capture append="oxidBlock_content"}]
+
+[{$noscript_content}]
+
+<div id="stylaMagazine"></div>
+    <div id="amazineEmbed"></div>
+[{/capture}]
+
 [{include file="layout/page.tpl"}]

@@ -2,7 +2,7 @@
 
 class StylaFeed_Setup{
 
-    const STYLA_BASEDIR = 'amazinefeed/';
+    const STYLA_BASEDIR = 'stylafeed/';
 
     private static $_urls = array(
         array('orig_url' => 'index.php?cl=StylaFeed_Output&fnc=showAll', 'seo_action' => 'index/'),
