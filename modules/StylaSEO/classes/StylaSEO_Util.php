@@ -171,6 +171,7 @@ class StylaSEO_Util{
         $curl->setOption('CURLOPT_HTTPHEADER', array('OXID Styla SEO Module for ' . self::$_username));
         $curl->setOption('CURLOPT_FRESH_CONNECT', 1);
         $curl->setOption('CURLOPT_RETURNTRANSFER', 1);
+        $curl->setOption('CURLOPT_FOLLOWLOCATION', 1);
         $curl->setOption('CURLOPT_FORBID_REUSE', 1);
         $curl->setOption('CURLOPT_TIMEOUT', 60);
         $curl->setOption('CURLOPT_SSL_VERIFYPEER', 0);
