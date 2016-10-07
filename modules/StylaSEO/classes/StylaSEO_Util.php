@@ -204,7 +204,7 @@ class StylaSEO_Util{
                 $sVersion = $aRes['content'];
             }
         }
-        else {
+        if ($sVersion == '') {
             // get version from styla
             $api_url = oxRegistry::getConfig()->getConfigParam('styla_api_url');
             if (!$api_url) {
