@@ -64,54 +64,7 @@ class StylaSEO_Util{
     }
 
     public function getRemoteContent($username, $params){
-
-        $type = $params['type'];
-        self::$_username = $username;
-
-        if ($type == 'tag') {
-            $url = 'user/' . $username . '/tag/' . $params['tagname'];
-        } elseif ($type == 'story') {
-            $url = 'story/' . $params['storyname'];
-        } elseif ($type == 'category') {
-            $url = 'user/' . $params['username'] . '/category/' . $params['category'];
-        } elseif ($type == 'user') {
-            $url = 'user/' . $params['username'];
-        } else {
-            $url = 'user/' . $username; // magazine default
-        }
-
-        $cache_key = preg_replace('/[\/:]/i','-','stylaseo_'.$url);
-
-        if(!$arr = $this->loadFromCache($cache_key)){
-            $arr = $this->_loadRemoteContent();
-            if(!$arr)
-                return;
-
-            $this->saveToCache($cache_key, $arr);
-        }
-
-        return $arr;
-    }
-
-    protected function _loadRemoteContent()
-    {
-        try{
-            return $this->_getMetadata();
-
-        } catch (Exception $e) {
-            echo 'ERROR: ' . $e->getMessage();
-            return false;
-        }
-    }
-
-    /**
-     * Adds meta properties to the given array and returns it
-     *
-     * @return array
-     */
-    protected function _getMetadata()
-    {
-        $ret = array();
+        self::$_username = $username; // Is this needed ?!?
 
         $seoServerUrl = oxRegistry::getConfig()->getConfigParam('styla_seo_server');
         if (!$seoServerUrl) $seoServerUrl = self::SEO_URL;
@@ -126,6 +79,32 @@ class StylaSEO_Util{
         $request = oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI');
         $request = substr($request, strpos($request, $basedir) + strlen($basedir) + 1);
         $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . $request;
+
+        $cache_key = preg_replace('/[\/:]/i','-','stylaseo_'.$url);
+
+        if(!$arr = $this->loadFromCache($cache_key)) {
+            try{
+                $arr = $this->_fetchSeoData($url);
+                if($arr) {
+                    $this->saveToCache($cache_key, $arr);
+                }
+            } catch (Exception $e) {
+                echo 'ERROR: ' . $e->getMessage();
+                return false;
+            }
+        }
+
+        return $arr;
+    }
+
+    /**
+     * Adds meta properties to the given array and returns it
+     *
+     * @return array
+     */
+    protected function _fetchSeoData($url)
+    {
+        $ret = array();
 
         if (!$_res = $this->_getCurlResult($url)) {
             return $ret;
@@ -168,7 +147,7 @@ class StylaSEO_Util{
         $curl->setUrl($url);
         $curl->setOption('CURLOPT_POST', 0);
         $curl->setOption('CURLOPT_HEADER', 0);
-        $curl->setOption('CURLOPT_HTTPHEADER', array('OXID Styla SEO Module for ' . self::$_username));
+        $curl->setOption('CURLOPT_HTTPHEADER', array('OXID Styla SEO Module'));
         $curl->setOption('CURLOPT_FRESH_CONNECT', 1);
         $curl->setOption('CURLOPT_RETURNTRANSFER', 1);
         $curl->setOption('CURLOPT_FOLLOWLOCATION', 1);
