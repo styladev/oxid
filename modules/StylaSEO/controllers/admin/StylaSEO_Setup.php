@@ -6,10 +6,6 @@ class StylaSEO_Setup{
 
     private static $_urls = array(
         array('orig_url' => 'index.php?cl=StylaSEO_Output', 'seo_action' => ''),
-        array('orig_url' => 'index.php?cl=StylaSEO_Output', 'seo_action' => 'tag/'),
-        array('orig_url' => 'index.php?cl=StylaSEO_Output', 'seo_action' => 'story/'),
-        array('orig_url' => 'index.php?cl=StylaSEO_Output', 'seo_action' => 'user/'),
-        array('orig_url' => 'index.php?cl=StylaSEO_Output', 'seo_action' => 'category/'),
         array('orig_url' => 'index.php?cl=StylaSEO_Output&fnc=getPluginVersion', 'seo_action' => 'version/')
     );
 

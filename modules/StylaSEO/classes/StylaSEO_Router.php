@@ -26,18 +26,9 @@ class StylaSEO_Router extends StylaSEO_Router_parent{
 
         $oStr = getStr();
 
-        // Only use our way if parent did not find something and styla base dir is used
         if($aRet === false && $oStr->strpos($sSeoUrl, $sStylaBase) !== false){
-            // Remove shop base url from url (should not even be there)
-            $sBaseUrl = $this->getConfig()->getShopURL();
-            if ($oStr->strpos($sSeoUrl, $sBaseUrl) === 0) {
-                $sSeoUrl = $oStr->substr($sSeoUrl, $oStr->strlen($sBaseUrl));
-            }
-
-            $sSeoUrl = rtrim($sSeoUrl,'/');
-            $sSeoUrl = substr($sSeoUrl,0,strrpos($sSeoUrl,'/')+1);
-
-            $aRet = parent::decodeUrl($sSeoUrl);
+            # Fallback to magazine route
+            $aRet = parent::decodeUrl((rtrim($sStylaBase, '/').'/'));
         }
 
         return $aRet;
