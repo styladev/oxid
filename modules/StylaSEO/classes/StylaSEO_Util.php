@@ -132,7 +132,9 @@ class StylaSEO_Util{
             $ret['noscript_content'] = $result->html->body;
         }
 
-        oxRegistry::getUtils()->setHeader("HTTP/1.0 404 Not Found");
+        if (isset($result->status)) {
+            $ret['status'] = $result->status;
+        }
 
         return $ret;
     }
