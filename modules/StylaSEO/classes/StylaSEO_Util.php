@@ -109,7 +109,7 @@ class StylaSEO_Util{
         if (isset($result->tags) && count($result->tags)) {
             $ret['meta'] = array();
             foreach ($result->tags as $tag) {
-                if (in_array($tag->tag, array('link', 'meta'), true)) {
+                if (in_array($tag->tag, array('link', 'meta', 'noscript'), true)) {
                     $ret['meta'][] = $tag;
 
                     if (isset($tag->attributes->name)
