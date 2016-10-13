@@ -63,17 +63,12 @@ class StylaSEO_Util{
         return oxRegistry::getUtils()->toFileCache($this->_getCacheId($name), $aData);
     }
 
-    public function getRemoteContent($username, $params){
-        self::$_username = $username; // Is this needed ?!?
-
+    public function getRemoteContent($username){
         $seoServerUrl = oxRegistry::getConfig()->getConfigParam('styla_seo_server');
         if (!$seoServerUrl) $seoServerUrl = self::SEO_URL;
 
         $basedir = oxRegistry::getConfig()->getConfigParam('styla_seo_basedir');
         if (!$basedir) $basedir = StylaSEO_Setup::STYLA_BASEDIR;
-
-        // Should be filled, StylaSEO_Output checks this already
-        $username = oxRegistry::getConfig()->getConfigParam('styla_username');
 
         // Get the correct url for the server's url parameter
         $request = oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI');

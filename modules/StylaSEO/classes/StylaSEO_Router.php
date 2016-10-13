@@ -33,10 +33,6 @@ class StylaSEO_Router extends StylaSEO_Router_parent{
             if ($oStr->strpos($sSeoUrl, $sBaseUrl) === 0) {
                 $sSeoUrl = $oStr->substr($sSeoUrl, $oStr->strlen($sBaseUrl));
             }
-            
-            if ($this->_getStylaFncFromUrl($sSeoUrl)) {
-                return $this->_getStylaFncFromUrl($sSeoUrl);
-            }
 
             $sSeoUrl = rtrim($sSeoUrl,'/');
             $sSeoUrl = substr($sSeoUrl,0,strrpos($sSeoUrl,'/')+1);
@@ -45,41 +41,6 @@ class StylaSEO_Router extends StylaSEO_Router_parent{
         }
 
         return $aRet;
-    }
-
-    /**
-     * Returns array with styla controller and function extracted 
-     *
-     * @param string $sSeoUrl
-     *
-     * @return string[]|bool
-     */
-    protected function _getStylaFncFromUrl($sSeoUrl)
-    {
-        if (getStr()->strpos($sSeoUrl, 'user') !== false) {
-            return array(
-                'cl' => 'StylaSEO_Output',
-                'fnc' => 'showUser',
-            );
-        }
-
-        // showCategory can override showUser
-        if (getStr()->strpos($sSeoUrl, 'category') !== false) {
-            return array(
-                'cl' => 'StylaSEO_Output',
-                'fnc' => 'showCategory',
-            );
-        }
-
-        // showCategory can override showUser
-        if (getStr()->strpos($sSeoUrl, 'version') !== false) {
-            return array(
-                'cl' => 'StylaSEO_Output',
-                'fnc' => 'getPluginVersion',
-            );
-        }
-
-        return false;
     }
 }
 

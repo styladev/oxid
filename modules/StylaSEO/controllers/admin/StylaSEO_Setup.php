@@ -5,9 +5,8 @@ class StylaSEO_Setup{
     const STYLA_BASEDIR = 'magazin';
 
     private static $_urls = array(
-        array('orig_url' => 'index.php?cl=StylaSEO_Output&fnc=showMagazine', 'seo_action' => ''),
-        array('orig_url' => 'index.php?cl=StylaSEO_Output&fnc=showTag', 'seo_action' => 'tag/'),
-        array('orig_url' => 'index.php?cl=StylaSEO_Output&fnc=showStory', 'seo_action' => 'story/'),
+        array('orig_url' => 'index.php?cl=StylaSEO_Output', 'seo_action' => ''),
+        array('orig_url' => 'index.php?cl=StylaSEO_Output&fnc=getPluginVersion', 'seo_action' => 'version')
     );
 
 
@@ -41,14 +40,9 @@ class StylaSEO_Setup{
     }
 
     public static function cleanup(){
-        
         $oDb = oxDb::getDb();
         $sShopId = oxRegistry::getConfig()->getShopId();
         $sQuery   = "DELETE FROM `oxseo` WHERE `OXSTDURL` LIKE '%StylaSEO_Output%' and oxshopid = ".$oDb->quote($sShopId)." ;";
-        $oDb->Execute($sQuery);
-
-        // Legacy
-        $sQuery   = "DELETE FROM `oxseo` WHERE `OXSTDURL` LIKE '%Amazineseo_Output%' and oxshopid = ".$oDb->quote($sShopId)." ;";
         $oDb->Execute($sQuery);
     }
 
