@@ -65,8 +65,8 @@ class StylaSEO_Output extends oxUBase{
 
             $ret = $this->_util->getRemoteContent($this->_username, $this->_feed_params);
             $this->_ret = $ret;
-            if ($ret->status) {
-                oxRegistry::getUtils()->setHeader("HTTP/1.0 ".$ret->status);
+            if (isset($ret['status'])) {
+                oxRegistry::getUtils()->setHeader("HTTP/1.0 ".$ret['status']);
             }
 
             $this->setMetaDescription($ret['meta']['description']);
