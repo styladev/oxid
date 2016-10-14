@@ -68,12 +68,11 @@ class StylaSEO_Output extends oxUBase{
             }
 
             $this->setMetaDescription($ret['meta']['description']);
+            unset($ret['meta']['description']);
 
-            if ($type == 'user' || $type == 'magazine' || $type == 'story') {
-                $this->getConfig()->setConfigParam('sFbAppId', ''); // set this to empty because we will overwrite the FB/opengraph data in our template anyway, we dont want to display the ones coming from Azure templates
-            }
+            $this->getConfig()->setConfigParam('sFbAppId', ''); // set this to empty because we will overwrite the FB/opengraph data in our template anyway, we dont want to display the ones coming from Azure templates
 
-            if ($type == 'story') {
+            if (isset($ret['meta']['keywords'])) {
                 $this->setMetaKeywords($ret['meta']['keywords']);
             }
 
@@ -81,7 +80,6 @@ class StylaSEO_Output extends oxUBase{
             $this->_aViewData['css_embed'] = $this->_util->getCssEmbedCode($this->_username, $this->_snippet_url);
             $this->_aViewData['noscript_content'] = $ret['noscript_content'];
             $this->_aViewData['meta_author'] = $ret['meta']['author'];
-            $this->_aViewData['feed_type'] = $type;
             $this->_aViewData['meta'] = $this->createHeaderHtml($ret['meta']);
         }
 
