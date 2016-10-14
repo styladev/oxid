@@ -92,17 +92,18 @@ class StylaSEO_Output extends oxUBase{
     public function createHeaderHtml($meta) {
         $retArray = [];
         foreach($meta as $element) {
-            $html = '<'.$element['tag'];
-            foreach ($element['attributes'] as $attribKey => $attribValue) {
-                $html .= ' '.$attribKey.'="'.$attribValue.'"';
+            if (isset($element->tag) && $element->tag != "") {
+                $html = '<'.$element->tag;
+                foreach ($element->attributes as $aKey => $aVal) {
+                    $html .= ' '.$aKey.'="'.$aVal.'"';
+                }
+                if (isset($element->content) && $element->content != "") {
+                    $html .= '>'.$element->content.'</'.$element->tag.'>';
+                } else {
+                    $html .= ' />';
+                }
+                array_push($retArray, $html);
             }
-            $html .= '>';
-            if (isset($element['content'])) {
-                $html .= $element['content'].'</'.$element['tag'].'>';
-            } else {
-                $html .= ' />';
-            }
-            array_push($retArray, $html);
         }
         return $retArray;
     }
