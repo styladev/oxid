@@ -73,7 +73,7 @@ class StylaSEO_Util{
         // Get the correct url for the server's url parameter
         $request = oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI');
         $request = substr($request, strpos($request, $basedir) + strlen($basedir) + 1);
-        $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . $request;
+        $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . urlencode($request);
 
         $cache_key = preg_replace('/[\/:]/i','-','stylaseo_'.$url);
 

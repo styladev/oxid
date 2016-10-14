@@ -82,11 +82,29 @@ class StylaSEO_Output extends oxUBase{
             $this->_aViewData['noscript_content'] = $ret['noscript_content'];
             $this->_aViewData['meta_author'] = $ret['meta']['author'];
             $this->_aViewData['feed_type'] = $type;
-            $this->_aViewData['meta'] = $ret['meta'];
+            $this->_aViewData['meta'] = $this->createHeaderHtml($ret['meta']);
         }
 
 
         return $this->_sThisTemplate;
+    }
+
+    public function createHeaderHtml($meta) {
+        $retArray = [];
+        foreach($meta as $element) {
+            $html = '<'.$element['tag'];
+            foreach ($element['attributes'] as $attribKey => $attribValue) {
+                $html .= ' '.$attribKey.'="'.$attribValue.'"';
+            }
+            $html .= '>';
+            if (isset($element['content'])) {
+                $html .= $element['content'].'</'.$element['tag'].'>';
+            } else {
+                $html .= ' />';
+            }
+            array_push($retArray, $html);
+        }
+        return $retArray;
     }
 
     /**
