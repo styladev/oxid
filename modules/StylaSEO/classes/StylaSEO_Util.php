@@ -5,42 +5,22 @@ class StylaSEO_Util{
     const STYLA_URL = 'http://cdn.styla.com';
     const API_STYLA_URL = 'http://live.styla.com';
     const SEO_URL = 'http://seo.styla.com';
+
     protected static $_username = '';
     protected static $_res = '';
 
     public static function getJsEmbedCode($username, $js_url = null){
-
         if(!$js_url)
             $js_url = self::STYLA_URL;
         $url = preg_filter('/https?:(.+)/i', '$1', (rtrim($js_url, '/').'/')).'scripts/clients/'.$username.'.js?version=' . self::_getVersion($username);
-
         return '<script  type="text/javascript" src="'.$url.'" defer="defer"></script>';
     }
 
     public static function getCssEmbedCode($username, $css_url = null){
-
         if(!$css_url)
             $css_url = self::STYLA_URL;
-
         $sCssUrl = preg_filter('/https?:(.+)/i', '$1', (rtrim($css_url, '/').'/')).'styles/clients/'.$username.'.css?version=' . self::_getVersion($username);
-
         return '<link rel="stylesheet" type="text/css" href="' .  $sCssUrl . '">';
-    }
-
-
-    public static function getActionFromUrl($basedir = 'magazin'){
-        $url = $_SERVER['REQUEST_URI'];
-        $action = preg_filter('(/en)?/'.$basedir.'/([^\/]+).*/i', '$2', $url);
-        return $action;
-    }
-
-    public function getParamFromUrl($search){
-        $url = $_SERVER['REQUEST_URI'];
-        if(($start = strpos($url,$search))===false)
-            return false;
-
-        $ret =substr($url, $start+strlen($search)+1);
-        return rtrim($ret,'/');
     }
 
     protected function _getCacheId($name){
@@ -109,14 +89,12 @@ class StylaSEO_Util{
             $ret['meta'] = array();
             foreach ($result->tags as $tag) {
                 if (in_array($tag->tag, array('link', 'meta', 'noscript'), true)) {
-                    if (isset($tag->attributes->name)) {
-                        if (in_array($tag->attributes->name, array('canonical', 'author'), true)) {
-                            $ret['meta'][] = $tag;
+                    if (isset($tag->attributes->name) && in_array($tag->attributes->name, array('description', 'keywords'), true)) {
+                        $ret[$tag->attributes->name] = $tag->attributes->content;
+                    } else {
+                        $ret['meta'][] = $tag;
+                        if (isset($tag->attributes->name) && in_array($tag->attributes->name, array('canonical', 'author'), true)) {
                             $ret['meta'][$tag->attributes->name] = $tag->attributes->content;
-                        } else if (in_array($tag->attributes->name, array('description', 'keywords'), true)) {
-                            $ret[$tag->attributes->name] = $tag->attributes->content;
-                        } else {
-                            $ret['meta'][] = $tag;
                         }
                     }
                 } elseif ($tag->tag === 'title') {
@@ -142,7 +120,7 @@ class StylaSEO_Util{
      * @param string $url
      * @return string
      */
-    protected function _getCurlResult($url)
+    protected static function _getCurlResult($url)
     {
         $curl = oxNew('StylaSEO_Curl');
         $curl->setUrl($url);
@@ -169,13 +147,11 @@ class StylaSEO_Util{
      * @param $username
      *
      * @compatibleOxidVersion 5.2.x
-     *
+     * @return string
      */
-    protected function _getVersion($username)
+    protected static function _getVersion($username)
     {
         $sVersion = '';
-
-        // try to load from cache
         $sCacheName = 'StylaVersionCache';
 
         if ($aRes = oxRegistry::getUtils()->fromFileCache($sCacheName)) {
