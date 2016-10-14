@@ -56,6 +56,14 @@ class StylaSEO_Output extends oxUBase{
         return $this->_ret['canonical_url'];
     }
 
+    public function getMetaDescription() {
+        return $this->_ret['description'];
+    }
+
+    public function getMetaKeywords() {
+        return $this->_ret['keywords'];
+    }
+
     public function render(){
 
         parent::render();

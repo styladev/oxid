@@ -104,18 +104,20 @@ class StylaSEO_Util{
         if (!$_res = $this->_getCurlResult($url)) {
             return $ret;
         }
-
         $result = json_decode($_res);
         if (isset($result->tags) && count($result->tags)) {
             $ret['meta'] = array();
             foreach ($result->tags as $tag) {
                 if (in_array($tag->tag, array('link', 'meta', 'noscript'), true)) {
-                    $ret['meta'][] = $tag;
-
-                    if (isset($tag->attributes->name)
-                        && in_array($tag->attributes->name, array('description', 'keywords', 'canonical', 'author'), true)
-                    ) {
-                        $ret['meta'][$tag->attributes->name] = $tag->attributes->content;
+                    if (isset($tag->attributes->name)) {
+                        if (in_array($tag->attributes->name, array('canonical', 'author'), true)) {
+                            $ret['meta'][] = $tag;
+                            $ret['meta'][$tag->attributes->name] = $tag->attributes->content;
+                        } else if (in_array($tag->attributes->name, array('description', 'keywords'), true)) {
+                            $ret[$tag->attributes->name] = $tag->attributes->content;
+                        } else {
+                            $ret['meta'][] = $tag;
+                        }
                     }
                 } elseif ($tag->tag === 'title') {
                     $ret['page_title'] = $tag->content;
