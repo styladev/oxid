@@ -13,7 +13,7 @@ class StylaSEO_Util{
         if(!$js_url)
             $js_url = self::STYLA_URL;
         $url = preg_filter('/https?:(.+)/i', '$1', (rtrim($js_url, '/').'/')).'scripts/clients/'.$username.'.js?version=' . self::_getVersion($username);
-        return '<script  type="text/javascript" src="'.$url.'" defer="defer"></script>';
+        return '<script  type="text/javascript" src="'.$url.'" async></script>';
     }
 
     public static function getCssEmbedCode($username, $css_url = null){
