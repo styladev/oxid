@@ -1,5 +1,5 @@
 <?php
-$sMetadataVersion = '1.3.1';
+$sMetadataVersion = '1.1';
 
 $aModule = array(
     'id'          => 'StylaSEO',
