@@ -28,7 +28,7 @@ class StylaSEO_Output extends oxUBase{
         $aPath = array();
 
         $aPath['title'] = oxRegistry::getLang()->translateString('Magazine', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = $this->getLink();
+        $aPath['link'] = $this->getConfig()->getCurrentShopUrl() . $this->getConfig()->getConfigParam('styla_seo_basedir');
         $aPaths[] = $aPath;
 
         return $aPaths;
