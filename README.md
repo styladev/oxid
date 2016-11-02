@@ -38,3 +38,5 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 - Task: Generate a random api key
 - Task: Styla Patch in Version einbinden
 
+### V1.4.0
+- Task: Breadcrumb Link is not working
