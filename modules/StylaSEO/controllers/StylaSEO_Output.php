@@ -56,23 +56,31 @@ class StylaSEO_Output extends oxUBase{
         return $this->_ret['canonical_url'];
     }
 
+    public function getMetaDescription() {
+        return $this->_ret['description'];
+    }
+
+    public function getMetaKeywords() {
+        return $this->_ret['keywords'];
+    }
+
     public function render(){
 
         parent::render();
 
         if(!empty($this->_username)) {
-            $type = $this->_feed_params['type'];
-
-            $ret = $this->_util->getRemoteContent($this->_username, $this->_feed_params);
+            $ret = $this->_util->getRemoteContent($this->_username);
             $this->_ret = $ret;
-
-            $this->setMetaDescription($ret['meta']['description']);
-
-            if ($type == 'user' || $type == 'magazine' || $type == 'story') {
-                $this->getConfig()->setConfigParam('sFbAppId', ''); // set this to empty because we will overwrite the FB/opengraph data in our template anyway, we dont want to display the ones coming from Azure templates
+            if (isset($ret['status'])) {
+                oxRegistry::getUtils()->setHeader("HTTP/1.0 ".$ret['status']);
             }
 
-            if ($type == 'story') {
+            $this->setMetaDescription($ret['meta']['description']);
+            unset($ret['meta']['description']);
+
+            $this->getConfig()->setConfigParam('sFbAppId', ''); // set this to empty because we will overwrite the FB/opengraph data in our template anyway, we dont want to display the ones coming from Azure templates
+
+            if (isset($ret['meta']['keywords'])) {
                 $this->setMetaKeywords($ret['meta']['keywords']);
             }
 
@@ -80,53 +88,30 @@ class StylaSEO_Output extends oxUBase{
             $this->_aViewData['css_embed'] = $this->_util->getCssEmbedCode($this->_username, $this->_snippet_url);
             $this->_aViewData['noscript_content'] = $ret['noscript_content'];
             $this->_aViewData['meta_author'] = $ret['meta']['author'];
-            $this->_aViewData['feed_type'] = $type;
-            $this->_aViewData['meta'] = $ret['meta'];
+            $this->_aViewData['meta'] = $this->createHeaderHtml($ret['meta']);
         }
 
 
         return $this->_sThisTemplate;
     }
 
-    public function showMagazine(){
-        $this->_feed_params = array('type'=>'magazine');
-    }
-
-    public function showTag(){
-        $tagname = $this->_util->getParamFromUrl('tag');
-        $this->_feed_params = array('type'=>'tag', 'tagname' => $tagname);
-    }
-
-    public function showStory(){
-        $storyname = $this->_util->getParamFromUrl('story');
-        $this->_feed_params = array('type'=>'story', 'storyname' => $storyname);
-    }
-
-    /**
-     * Gets username from url and writes it in _feed_params
-     */
-    public function showUser()
-    {
-        $username = $this->_util->getParamFromUrl('user');
-        $this->_feed_params = array('type' => 'user', 'username' => $username);
-    }
-
-    /**
-     * Gets category and user string from URL and writes it in _feed_params
-     */
-    public function showCategory()
-    {
-        $category = $this->_util->getParamFromUrl('category');
-
-        $username = $this->_util->getParamFromUrl('user');
-        if (!$username) {
-            $username = $this->_username;
-        } else {
-            // getParamFromUrl gets everything after the first slash after the searched string. We only want the username
-            $username = getStr()->substr($username, 0, getStr()->strpos($username, '/'));
+    public function createHeaderHtml($meta) {
+        $retArray = [];
+        foreach($meta as $element) {
+            if (isset($element->tag) && $element->tag != "") {
+                $html = '<'.$element->tag;
+                foreach ($element->attributes as $aKey => $aVal) {
+                    $html .= ' '.$aKey.'="'.$aVal.'"';
+                }
+                if (isset($element->content) && $element->content != "") {
+                    $html .= '>'.$element->content.'</'.$element->tag.'>';
+                } else {
+                    $html .= ' />';
+                }
+                array_push($retArray, $html);
+            }
         }
-
-        $this->_feed_params = array('type' => 'category', 'username' => $username, 'category' => $category);
+        return $retArray;
     }
 
     /**

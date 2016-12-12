@@ -26,60 +26,12 @@ class StylaSEO_Router extends StylaSEO_Router_parent{
 
         $oStr = getStr();
 
-        // Only use our way if parent did not find something and styla base dir is used
         if($aRet === false && $oStr->strpos($sSeoUrl, $sStylaBase) !== false){
-            // Remove shop base url from url (should not even be there)
-            $sBaseUrl = $this->getConfig()->getShopURL();
-            if ($oStr->strpos($sSeoUrl, $sBaseUrl) === 0) {
-                $sSeoUrl = $oStr->substr($sSeoUrl, $oStr->strlen($sBaseUrl));
-            }
-            
-            if ($this->_getStylaFncFromUrl($sSeoUrl)) {
-                return $this->_getStylaFncFromUrl($sSeoUrl);
-            }
-
-            $sSeoUrl = rtrim($sSeoUrl,'/');
-            $sSeoUrl = substr($sSeoUrl,0,strrpos($sSeoUrl,'/')+1);
-
-            $aRet = parent::decodeUrl($sSeoUrl);
+            # Fallback to magazine route
+            $aRet = parent::decodeUrl((rtrim($sStylaBase, '/').'/'));
         }
 
         return $aRet;
-    }
-
-    /**
-     * Returns array with styla controller and function extracted 
-     *
-     * @param string $sSeoUrl
-     *
-     * @return string[]|bool
-     */
-    protected function _getStylaFncFromUrl($sSeoUrl)
-    {
-        if (getStr()->strpos($sSeoUrl, 'user') !== false) {
-            return array(
-                'cl' => 'StylaSEO_Output',
-                'fnc' => 'showUser',
-            );
-        }
-
-        // showCategory can override showUser
-        if (getStr()->strpos($sSeoUrl, 'category') !== false) {
-            return array(
-                'cl' => 'StylaSEO_Output',
-                'fnc' => 'showCategory',
-            );
-        }
-
-        // showCategory can override showUser
-        if (getStr()->strpos($sSeoUrl, 'version') !== false) {
-            return array(
-                'cl' => 'StylaSEO_Output',
-                'fnc' => 'getPluginVersion',
-            );
-        }
-
-        return false;
     }
 }
 
