@@ -20,6 +20,11 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 ## Release Notes
 
+### V1.4.0
+- Bugfix: Breadcrumb Link is not working
+- Task: Added seo pagination for feeds
+- Task: Set status code according to seo api response
+
 ### V1.3.1
 - Bugfix: Always append version to script and css
 
@@ -37,6 +42,3 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 - Task: Use seo server to fetch content
 - Task: Generate a random api key
 - Task: Styla Patch in Version einbinden
-
-### V1.4.0
-- Task: Breadcrumb Link is not working
