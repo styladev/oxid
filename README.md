@@ -4,9 +4,9 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 ## Installation
 
-1. Place the *StylaFeed* and *StylaSEO* folders under the modules directory inside the *modules* directory on your OXID installation.
+1. Copy the contents of *copy_to_modules* into the *modules* directory on your OXID installation.
 
-2. Activate both plugins via the OXID admin interface under settings **Extensions -> Modules**:
+2. Activate the plugin via the OXID admin interface under settings **Extensions -> Modules**:
 ![Activate Feed Plugin](/readme/readme_activate_feed.png)
 ![Activate Seo Plugin](/readme/readme_activate_seo.png)
 
@@ -20,15 +20,24 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 ## Release Notes
 
+### V1.5.0
+- Merged both modules StylaFeed and StylaSEO into one module
+- Task: Improve product images via sku / product id
+
+### V1.4.0
+- Bugfix: Breadcrumb Link is not working
+- Task: Added seo pagination for feeds
+- Task: Set status code according to seo api response
+
 ### V1.3.1
 - Bugfix: Always append version to script and css
 
 ### V1.3.0
-- Extension: Moving the Styla snippet into the `<head>``
+- Extension: Moving the Styla snippet into the `<head>`
 - Extension: Version Endpoint
 - Extension: API Key
 - Extension: Adminconfig for API Domain URL
-- Bugfix: StylaFeed - _getProductDetails wrong check for parent article- Bufix
+- Bugfix: StylaFeed - `_getProductDetails` wrong check for parent article- Bugfix
 - Task: External Search Best Pratice
 - Task: Remove deprecated "Source URL" in admin panel
 
@@ -37,6 +46,3 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 - Task: Use seo server to fetch content
 - Task: Generate a random api key
 - Task: Styla Patch in Version einbinden
-
-### V1.4.0
-- Task: Breadcrumb Link is not working
