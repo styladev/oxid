@@ -7,13 +7,12 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 1. Copy the contents of *copy_to_modules* into the *modules* directory on your OXID installation.
 
 2. Activate the plugin via the OXID admin interface under settings **Extensions -> Modules**:
-![Activate Feed Plugin](/readme/readme_activate_feed.png)
-![Activate Seo Plugin](/readme/readme_activate_seo.png)
+![Activate Plugin](/readme/readme_activate.png)
 
-3. Configurate your styla username (provided by your account manager) in the Styla Seo plugin:
+3. Configurate your styla username (provided by your account manager) in the Styla plugin:
 ![Configure Username](/readme/readme_styla_username.png)
 
-4. Configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed plugin (please send this to your account manager - so we can enable your products in the styla editor):
+4. Enable product api and configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed plugin (please send this to your account manager - so we can enable your products in the styla editor):
 ![Configurate Api Key](/readme/readme_api_key.png)
 
 [Read more about extending the plugin!](modules/StylaFeed/Extending.md)
