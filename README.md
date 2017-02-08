@@ -17,6 +17,18 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 [Read more about extending the plugin!](modules/StylaFeed/Extending.md)
 
+### Important if updating to V1.5.0
+
+If you a previous version of the plugin (both modules) is already installed then you should stick to the following sequence when installing the 1.5 update:
+
+1. Install the new module
+2. Activate the new module
+3. Enter the settings from the previous  version
+4. Deactivate the old modulers
+5. Uninstall the old modules.
+
+If you go through these steps in a different sequence, this might lead to problems.  
+
 ## Release Notes
 
 ### V1.5.0
