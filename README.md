@@ -17,6 +17,8 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 [Read more about extending the plugin!](modules/StylaFeed/Extending.md)
 
+### Please do not create any subpages in your CMS or directories for your magazine. The plugin itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well. 
+
 ### Important if updating to V1.5.0
 
 If a previous version of the plugin (both modules) is already installed then you should stick to the following sequence when installing the 1.5 update:
