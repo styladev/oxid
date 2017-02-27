@@ -27,7 +27,7 @@ class Styla_Articlelist extends oxArticleList
             $sType = 'oxtimestamp';
         }
         $sSelect = "SELECT $sArticleTable.* from $sArticleTable";
-        $sWhere = " WHERE $sArticleTable.oxparentid = '' AND " . $this->getBaseObject()->getSqlActiveSnippet() . " AND $sArticleTable.oxissearch = 1 AND $sArticleTable.oxpic1 != '' ";
+        $sWhere = " WHERE $sArticleTable.oxparentid = '' AND " . $this->getBaseObject()->getSqlActiveSnippet() . " AND $sArticleTable.oxissearch = 1 ";
         if ($skuFilter) {
             $sWhere .= " AND $sArticleTable.oxartnum=?";
             $values[] = $skuFilter;
