@@ -33,7 +33,7 @@ If you go through these steps in a different sequence, this might lead to proble
 
 ## Release Notes
 
-### V1.5.0
+### V1.5.1
 - Bugfix: Improve product images via sku / product id
 
 ### V1.5.0
