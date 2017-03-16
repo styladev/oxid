@@ -19,15 +19,16 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 ### Please do not create any subpages in your CMS or directories for your magazine. The plugin itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well.
 
-### Important if updating to V1.5.0
+### Important if updating to V1.5.0 or later
 
 If a previous version of the plugin (both modules) is already installed then you should stick to the following sequence when installing the 1.5 update:
 
 1. Install the new module
 2. Activate the new module
 3. Enter the settings from the previous version
-4. Deactivate the old modules
-5. Uninstall the old modules.
+4. Check the 'Enable Product API' box (screenshot above)
+5. Deactivate the old modules
+6. Uninstall the old modules.
 
 If you go through these steps in a different sequence, this might lead to problems.  
 
