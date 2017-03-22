@@ -2,6 +2,10 @@
 
 This plugin provides the magazine functionality to your oxid shop. It accepts all requests on the configurated base directory and generate a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable content including meta information. Additional it provides a product feed to use your own products in the styla editor.
 
+## Requirements
+
+OXID version 5.1 or later
+
 ## Installation
 
 1. Copy the contents of *copy_to_modules* into the *modules* directory on your OXID installation.
