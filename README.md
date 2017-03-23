@@ -6,7 +6,7 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 
 ## Requirements
 
-OXID version 5.1 or later
+OXID version 5.1.1 or later
 
 ## Installation
 
