@@ -1,6 +1,8 @@
 # Styla Oxid Plugin
 
-This plugin provides the magazine functionality to your oxid shop. It accepts all requests on the configurated base directory and generate a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable content including meta information. Additional it provides a product feed to use your own products in the styla editor.
+This plugin provides the magazine functionality to your oxid shop. It accepts all requests on the configured base directory and generate a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable content including meta information. Additional it provides a product feed to use your own products in the styla editor.
+
+The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the plugin does and how it exchanges data with Styla. 
 
 ## Requirements
 
