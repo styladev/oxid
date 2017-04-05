@@ -4,6 +4,14 @@ This plugin provides the magazine functionality to your oxid shop. It accepts al
 
 The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the plugin does and how it exchanges data with Styla. 
 
+## Table of Contents  
+[Requirements](#requirements)  
+[Installation](#installation)  
+[Updating to the latest version](#updating-to-the-latest-version)  
+[Database fields used by the plugin](#database-fields-used-by-the-plugin)  
+[Custom extensions or modifications](#custom-extensionsmodifications)  
+[Release Notes](#release-notes)  
+
 ## Requirements
 
 OXID version 5.1.1 or later
@@ -98,7 +106,7 @@ stylaFEED:
 magazine/index/, magazine/index/category/, magazine/index/product/
 ```
 
-## Custom extensions/modifications
+## Custom extensions or modifications
 
 [Read more about extending the plugin!](/copy_to_modules/Styla/Extending.md)
 
