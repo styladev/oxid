@@ -21,7 +21,6 @@ OXID version 5.1.1 or later
 4. Enable product api and configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed plugin (please send this to your account manager - so we can enable your products in the styla editor):
 ![Configurate Api Key](/readme/readme_api_key.png)
 
-[Read more about extending the plugin!](/copy_to_modules/Styla/Extending.md)
 
 ### Please do not create any subpages in your CMS or directories for your magazine. The plugin itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well.
 
@@ -44,6 +43,64 @@ Until V1.5.0 the plugin consisted of two modules installed separately. They were
 ![Uninstall the old modules](/readme/4-remove_old_modules.png)
 
 If you go through these steps in a different sequence, this might lead to problems.  
+
+## Database fields used by the plugin
+
+The following database fields of the standard OXID shop system are being
+used by the StylaFeed plugin:
+
+### For the generation of an article list
+
+```
+oxarticles.oxparent, oxarticles.oxactive, oxarticles.oxactivefrom, oxarticles.oxactiveto,
+oxarticles.oxsearch (=1), oxarticles.oxpic != '', oxarticles.oxartnum join oxobject2category
+(assigned categories) order by oxarticles.oxinsert / oxarticles.oxtimestam
+```
+
+### For the display of a product
+
+```
+oxarticles.oxid, oxarticles.oxtitle, oxartextends.oxlongdesc (Long Description),
+oxarticles.oxshortdesc, oxarticles.oxprice (standard getPrice() ), oxarticles.oxstock ( > 0),
+oxarticles.oxpic1, oxseo.oxseourl (assigned Seo-urls)
+```
+
+### For the display of variants
+
+```
+oxarticles.oxid, oxarticles.oxprice (standard getPrice() ), oxarticles.oxtprice (getTPrice()
+), oxarticles.oxstock, oxarticles.oxvarname, oxarticles.oxvarselect
+```
+
+The logic for getPrice() and getTPrice() is quite complex and can be different for each
+project. Generally the following fields are being used: oxarticles.oxprice, oxarticles.oxtprice,
+oxarticles.oxvat, oxvarminprice.
+
+### For the display of a category
+
+```
+oxcategories.oxid, oxcategories.oxtitle, oxcategories.oxshortdesc, sub-kategorien,
+oxseo.oxseourl (assigned seo-url) 
+```
+
+### For SEO URLs
+
+The methods stylaSEO onActivate and stylaFEED onActivate create static SEO URLS, which
+are being written into the oxseo table. These are the following (depending on the module
+settings in the backend of OXID):
+
+stylaSEO: 
+```
+magazine/, magazine/tag/, magazine/story/
+```
+stylaFEED: 
+```
+magazine/index/, magazine/index/category/, magazine/index/product/
+```
+
+## Custom extensions/modifications
+
+[Read more about extending the plugin!](/copy_to_modules/Styla/Extending.md)
 
 ## Release Notes
 
