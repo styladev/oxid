@@ -25,7 +25,7 @@ OXID version 5.1.1 or later
 
 ### Please do not create any subpages in your CMS or directories for your magazine. The plugin itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well.
 
-### Updatating to a later version
+## Updatating to the latest version
 
 ### Important if updating to V1.5.0 or later
 
