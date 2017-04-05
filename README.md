@@ -8,7 +8,8 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 [Requirements](#requirements)  
 [Installation](#installation)  
 [Updating to the latest version](#updating-to-the-latest-version)  
-[Database fields used by the plugin](#database-fields-used-by-the-plugin)  
+[Database fields used by the plugin](#database-fields-used-by-the-plugin) 
+[Known interactions with other OXID modules](#known-interactions-with-other-oxid-modules)
 [Custom extensions or modifications](#custom-extensions-or-modifications)  
 [Release Notes](#release-notes)  
 
@@ -105,6 +106,22 @@ stylaFEED:
 ```
 magazine/index/, magazine/index/category/, magazine/index/product/
 ```
+
+## Known interactions with other OXID modules
+
+Generally speaking, external modules do not cause problems with the Styla module as this module does work relatively independently.
+
+However, some shop-specific changes can lead to deviations between estimated and actual behavior, especially in the following cases:
+
+*	Usage of external search solutions (Celebros, findologic, etc.) may cause different search results in the Styla feed than with the same search phrase using the shops own search 
+
+*	Adjustments in the product logic like variants, prices, availability/saleability. To display such adjustments in Styla, the relevant standard OXID methods must be  extended 
+
+*	(getSqlActiveSnippet, getVariantsQuery and similar)
+
+*	If specific adjustments are desired in the Styla feed, the relevant methods can also be extended in the OXID way in \Styla_Feed
+
+There are no known blockers or conflicts making the installation of the plugin impossible. 
 
 ## Custom extensions or modifications
 
