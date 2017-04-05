@@ -45,7 +45,7 @@ Until V1.5.0 the plugin consisted of two modules installed separately. They were
 ![Activate the new module](/readme/1-Activate_1.5.png)
 3. Enter the settings from the previous version:
 ![Enter the settings from the previous version](/readme/2-configure.png)
-4. Check the 'Enable Product API' box (as on screenshot in 4. above):
+4. Check the 'Enable Product API' box (as on screenshot in 4. above)
 5. Deactivate the old modules:
 ![Deactivate the old modules](/readme/3-deativate_old_modules.png)
 6. Uninstall the old modules:
