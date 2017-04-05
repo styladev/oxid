@@ -29,17 +29,16 @@ OXID version 5.1.1 or later
 
 Until V1.5.0 the plugin consisted of two modules installed separately. They were merged to just one module in V1.5.0 and will stay so. If the two modules are already installed then you should stick to the following sequence when updating to V1.5.0 or later:
 
-1. Install the new module
+1. Install the new module:
 ![Install the new module](/readme/0-initial.png)
-2. Activate the new module
+2. Activate the new module:
 ![Activate the new module](/readme/1-Activate_1.5.png)
 3. Enter the settings from the previous version
 ![Enter the settings from the previous version](/readme/2-configure.png)
-4. Check the 'Enable Product API' box (screenshot above)
-![Configurate Api Key](/readme/readme_api_key.png)
-5. Deactivate the old modules
+4. Check the 'Enable Product API' box (as on screenshot in 4) above):
+5. Deactivate the old modules:
 ![Deactivate the old modules](/readme/3-deativate_old_modules.png)
-6. Uninstall the old modules.
+6. Uninstall the old modules:
 ![Uninstall the old modules](/readme/4-remove_old_modules.png)
 
 If you go through these steps in a different sequence, this might lead to problems.  
