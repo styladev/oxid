@@ -36,6 +36,7 @@ Until V1.5.0 the plugin consisted of two modules installed separately. They were
 3. Enter the settings from the previous version
 ![Enter the settings from the previous version](/readme/2-configure.png)
 4. Check the 'Enable Product API' box (screenshot above)
+![Configurate Api Key](/readme/readme_api_key.png)
 5. Deactivate the old modules
 ![Deactivate the old modules](/readme/3-deativate_old_modules.png)
 6. Uninstall the old modules.
