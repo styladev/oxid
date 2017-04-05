@@ -119,7 +119,7 @@ However, some shop-specific changes can lead to deviations between estimated and
 
 *	(`getSqlActiveSnippet`, `getVariantsQuery` and similar)
 
-*	If specific adjustments are desired in the Styla feed, the relevant methods can also be extended in the OXID way in \Styla_Feed
+*	If specific adjustments are desired in the Styla feed, the relevant methods can also be extended in the OXID way in `\Styla_Feed`
 
 There are no known blockers or conflicts making the installation of the plugin impossible. 
 
