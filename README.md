@@ -9,7 +9,7 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 [Installation](#installation)  
 [Updating to the latest version](#updating-to-the-latest-version)  
 [Database fields used by the plugin](#database-fields-used-by-the-plugin)  
-[Custom extensions or modifications](#custom-extensionsmodifications)  
+[Custom extensions or modifications](#custom-extensions-or-modifications)  
 [Release Notes](#release-notes)  
 
 ## Requirements
