@@ -21,7 +21,7 @@ OXID version 5.1.1 or later
 4. Enable product api and configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed plugin (please send this to your account manager - so we can enable your products in the styla editor):
 ![Configurate Api Key](/readme/readme_api_key.png)
 
-[Read more about extending the plugin!](modules/StylaFeed/Extending.md)
+[Read more about extending the plugin!](modules/copy_to_modules/StylaExtending.md)
 
 ### Please do not create any subpages in your CMS or directories for your magazine. The plugin itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well.
 
