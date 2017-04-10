@@ -35,6 +35,15 @@ OXID version 5.1.1 or later
 
 ## Updating to the latest version
 
+The sequence when updating shoud be as follows:
+
+1. Install the new module
+2. Activate the new module
+3. Enter the settings from the previous version
+4. Check the 'Enable Product API' box
+5. Deactivate the old module
+6. Uninstall the old module
+
 ### Important if updating to V1.5.0 or later
 
 Until V1.5.0 the plugin consisted of two modules installed separately. They were merged to just one module in V1.5.0 and will stay so. If the two modules are already installed then you should stick to the following sequence when updating to V1.5.0 or later:
