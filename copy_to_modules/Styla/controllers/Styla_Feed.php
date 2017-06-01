@@ -120,6 +120,7 @@ class Styla_Feed extends oxUBase
             // try to load the article by OXID first
             if (!$oArticle->load($sku)) {
                 $sSelect = $oArticle->buildSelectString(array('oxartnum' => $sku));
+                $sSelect .= ' ORDER BY OXPARENTID'; // Make sure the parent (if we got one) is selected first
                 if (!$oArticle->assignRecord($sSelect)) {
                     $this->_sError = 'PRODUCT NOT FOUND';
                     return;
@@ -152,6 +153,12 @@ class Styla_Feed extends oxUBase
         $this->aData['childs'] = $items;
 
         $this->_aViewData['action'] = 'category';
+    }
+
+    public function showVersion()
+    {
+        // output as string
+        die($this->oModule->getInfo('version'));
     }
 
     public function _checkApiKey()
@@ -192,6 +199,9 @@ class Styla_Feed extends oxUBase
             }
             $oItem["sku"] = $oArticle->getId();
             $oItem["name"] = $this->_filterText($oArticle->oxarticles__oxtitle->value);
+            if ($sBrand = $this->_getArticleBrand($oArticle)) {
+                $oItem["brand"] = $sBrand;
+            }
             $oItem["description"] = $this->_filterText($oArticle->getLongDesc());
             $oItem["shortdescription"] = $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
             $oItem["price"] = $sFinalPrice;
@@ -289,6 +299,9 @@ class Styla_Feed extends oxUBase
         }
 
         $data["name"] = $this->_filterText($oArticle->oxarticles__oxtitle->value);
+        if ($sBrand = $this->_getArticleBrand($oArticle)) {
+            $data["brand"] = $sBrand;
+        }
         $data["description"] = $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
         $data["pageUrl"] = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
         $data["saleable"] = $oArticle->oxarticles__oxstock->value > 0; // Currently only active and in stock items are returned
@@ -310,6 +323,25 @@ class Styla_Feed extends oxUBase
             }
         }
         return $data;
+    }
+
+    /**
+     * SMO-55: Show brand in product feed
+     *
+     * @param oxArticle $oArticle
+     * @return string
+     */
+    protected function _getArticleBrand($oArticle)
+    {
+        $sBrand = '';
+        $sBrandSetting = $this->getConfig()->getConfigParam('styla_feed_brand');
+        if ($sBrandSetting === 'oxmanufacturer' && ($oManufacturer = $oArticle->getManufacturer())) {
+            $sBrand = $oManufacturer->getFieldData('oxtitle');
+        } elseif ($sBrandSetting === 'oxvendor' && ($oVendor = $oArticle->getVendor())) {
+            $sBrand = $oVendor->getFieldData('oxtitle');
+        }
+
+        return $sBrand;
     }
 
     /**
@@ -355,6 +387,10 @@ class Styla_Feed extends oxUBase
      */
     protected function _getVariantsData($oArticle)
     {
+        // Temporarily (for the current request) set to true to enable variant loading
+        // setConfigParam does not save to DB so the next page load uses the normal setting
+        $this->getConfig()->setConfigParam('blLoadVariants', true);
+
         $aAttributes = array();
 
         $oParent = $oArticle;
@@ -398,6 +434,8 @@ class Styla_Feed extends oxUBase
                     }
                 }
             }
+
+            $aAttributes[$sKey]['options'] = $this->_getSortedOptions($aAttributes[$sKey]['options']);
         }
 
         // Convert elements 'options' & 'products' to not associative arrays
@@ -413,6 +451,62 @@ class Styla_Feed extends oxUBase
         }
 
         return $aAttributes;
+    }
+
+    /**
+     * Sorts the given options array by the configured sorting setting
+     *
+     * @param array $aUnsortedOptions
+     * @return array
+     */
+    protected function _getSortedOptions($aUnsortedOptions)
+    {
+        $aSorting = $this->_getConfiguredSorting();
+
+        // Sorting is not configured, just return input
+        if (!$aSorting) {
+            return $aUnsortedOptions;
+        }
+
+        $aTmpArray = array();
+        foreach ($aUnsortedOptions as $sNewKey => $aValue) {
+            $aTmpArray[$sNewKey] = $aValue['label'];
+        }
+
+        $aOptions = array();
+
+        // Sort by all values we got defined in the sorting array
+        $aSorted = array_intersect($aSorting, $aTmpArray);
+        $aTmpArray = array_flip($aTmpArray);
+        foreach ($aSorted as $sVariantName) {
+            $sNewKey = $aTmpArray[$sVariantName];
+            $aOptions[$sNewKey] = $aUnsortedOptions[$sNewKey];
+            unset($aTmpArray[$sVariantName]);
+        }
+
+        // Now re-add all other values at the end of the sorted array
+        foreach ($aTmpArray as $sVarSelectId => $sNewKey) {
+            $aOptions[$sNewKey] = $aUnsortedOptions[$sNewKey];
+        }
+
+        return $aOptions;
+    }
+
+    /**
+     * Returns full sorting from config
+     *
+     * @return array
+     */
+    protected function _getConfiguredSorting()
+    {
+        $aSorting = $this->getConfig()->getConfigParam('styla_feed_sorting');
+
+        $aFullSorting = array();
+        foreach ($aSorting as $sSort) {
+            $aFullSorting = array_merge($aFullSorting, explode(';', $sSort));
+        }
+
+        return $aFullSorting;
     }
 
     /**

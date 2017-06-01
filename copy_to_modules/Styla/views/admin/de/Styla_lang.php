@@ -25,4 +25,10 @@ $aLang = array(
     'SHOP_MODULE_styla_seo_magazin_title' => 'Magazin-Seitentitel enthält Shop-Prä- und Suffix',
     'SHOP_MODULE_styla_seo_server'        => 'SEO server URL',
     'SHOP_MODULE_styla_api_url'           => 'API domain URL',
+    'SHOP_MODULE_styla_feed_search_cols'  => 'Artikelfelder, die für die Produktsuche genutzt werden',
+    'SHOP_MODULE_styla_feed_sorting'      => 'Sortiere Varianten in der gegebenen Reihenfolge. <br>Wenn nicht konfiguriert, wird OXSORT verwendet.<br>Einzelne Werte müssen mit ; getrennt werden.<br>Beispiel: S;L;XL',
+    'SHOP_MODULE_styla_feed_brand'                => 'Marke im Produktfeed anzeigen',
+    'SHOP_MODULE_styla_feed_brand_none'           => 'Keine',
+    'SHOP_MODULE_styla_feed_brand_oxmanufacturer' => 'Hersteller (oxmanufacturer)',
+    'SHOP_MODULE_styla_feed_brand_oxvendor'       => 'Lieferant (oxvendor)',
 );

@@ -42,6 +42,9 @@ class Styla_Setup
 
             self::_writeSeoUrls($sBaseDir, self::$_aFeedUrls);
         }
+
+        // Write version getter
+        self::_writeSeoUrls("", array(array('orig_url' => 'index.php?cl=Styla_Feed&fnc=showVersion', 'seo_action' => 'styla-plugin-version/')));
     }
 
     /**
@@ -52,7 +55,10 @@ class Styla_Setup
      */
     protected static function _writeSeoUrls($sBaseDir, $aUrls)
     {
-        $sBaseDir = rtrim($sBaseDir, '/') . '/';
+        if(!empty($sBaseDir)) {
+            $sBaseDir = rtrim($sBaseDir, '/') . '/';
+        }
+
         $iShopID = oxRegistry::getConfig()->getShopId();
         $aLanguages = oxRegistry::getLang()->getLanguageArray();
         $defaultLang = oxRegistry::getConfig()->getConfigParam('sDefaultLang');
