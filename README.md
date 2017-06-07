@@ -15,7 +15,9 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 
 ## Requirements
 
-OXID version 5.1.1 or later
+OXID version 5.1.1 or later.
+
+Since OXID itself does not run on PHP7, we haven't tested on this PHP version.
 
 ## Installation
 
