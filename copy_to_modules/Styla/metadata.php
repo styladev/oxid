@@ -38,7 +38,6 @@ $aModule = array(
         array('name' => 'styla_seo_cache_ttl', 'type' => 'str', 'value' => '3600', 'group' => 'styla_general', 'constraints' => '', 'position' => 5), //
         array('name' => 'styla_seo_magazin_title', 'type' => 'bool', 'value' => '0', 'group' => 'styla_general', 'constraints' => '', 'position' => 6), //
 
-        array('name' => 'styla_api_active', 'type' => 'bool', 'value' => '1', 'group' => 'styla_feed', 'constraints' => '', 'position' => 1), // 6321424181
         array('name' => 'styla_api_key', 'type' => 'str', 'value' => '', 'group' => 'styla_feed', 'constraints' => '', 'position' => 1), // 6321424181
         array('name' => 'styla_feed_basedir', 'type' => 'str', 'value' => 'stylafeed', 'group' => 'styla_feed', 'constraints' => '', 'position' => 2),
         array('name' => 'styla_page_size', 'type' => 'str', 'value' => '10', 'group' => 'styla_feed', 'constraints' => '', 'position' => 3),

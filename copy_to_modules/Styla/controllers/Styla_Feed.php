@@ -24,14 +24,6 @@ class Styla_Feed extends oxUBase
         $this->oModule = oxNew('oxModule');
         $this->oModule->load('Styla');
         $this->oUtil = oxNew('Styla_Util');
-
-        // Display error message if API has not been enabled
-        if (!$this->getConfig()->getConfigParam('styla_api_active')) {
-            $sCharset = oxRegistry::getLang()->translateString("charset");
-            oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . $sCharset);
-            oxRegistry::getUtils()->setHeader("HTTP/1.0 401 Unauthorized");
-            oxRegistry::getUtils()->showMessageAndExit('{"error":"1", "message":"API not active"}');
-        }
     }
 
     public function render()

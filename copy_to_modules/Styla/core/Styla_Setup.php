@@ -33,15 +33,12 @@ class Styla_Setup
 
         self::_writeSeoUrls($sBaseDir, self::$_aMagazineUrls);
 
-        // Writing feed URLs to SEO (only if product API is enabled)
-        if (oxRegistry::getConfig()->getConfigParam('styla_api_active')) {
-            $sBaseDir = oxRegistry::getConfig()->getConfigParam('styla_feed_basedir');
-            if ($sBaseDir == '') {
-                $sBaseDir = self::STYLA_FEED_BASEDIR;
-            }
-
-            self::_writeSeoUrls($sBaseDir, self::$_aFeedUrls);
+        // Writing feed URLs to SEO
+        $sBaseDir = oxRegistry::getConfig()->getConfigParam('styla_feed_basedir');
+        if ($sBaseDir == '') {
+            $sBaseDir = self::STYLA_FEED_BASEDIR;
         }
+        self::_writeSeoUrls($sBaseDir, self::$_aFeedUrls);
 
         // Write version getter
         self::_writeSeoUrls("", array(array('orig_url' => 'index.php?cl=Styla_Feed&fnc=showVersion', 'seo_action' => 'styla-plugin-version/')));
