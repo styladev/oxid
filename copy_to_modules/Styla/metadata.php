@@ -7,7 +7,7 @@ $aModule = array(
     'title'       => 'Styla',
     'description' => 'Styla Module provides a product api to add products to the stories.',
     'thumbnail'   => 'logo.png',
-    'version'     => '1.5.1',
+    'version'     => '1.5.2',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
@@ -38,15 +38,17 @@ $aModule = array(
         array('name' => 'styla_seo_cache_ttl', 'type' => 'str', 'value' => '3600', 'group' => 'styla_general', 'constraints' => '', 'position' => 5), //
         array('name' => 'styla_seo_magazin_title', 'type' => 'bool', 'value' => '0', 'group' => 'styla_general', 'constraints' => '', 'position' => 6), //
 
-        array('name' => 'styla_api_active', 'type' => 'bool', 'value' => '', 'group' => 'styla_feed', 'constraints' => '', 'position' => 1), // 6321424181
         array('name' => 'styla_api_key', 'type' => 'str', 'value' => '', 'group' => 'styla_feed', 'constraints' => '', 'position' => 1), // 6321424181
         array('name' => 'styla_feed_basedir', 'type' => 'str', 'value' => 'stylafeed', 'group' => 'styla_feed', 'constraints' => '', 'position' => 2),
-        array('name' => 'styla_page_size', 'type' => 'str', 'value' => '10', 'group' => 'styla_feed', 'constraints' => '', 'position' => 3), //
-        array('name' => 'styla_image_attribute', 'type' => 'str', 'value' => 'image', 'group' => 'styla_feed', 'constraints' => '', 'position' => 4), //
-        array('name' => 'styla_image_width', 'type' => 'str', 'value' => '320', 'group' => 'styla_feed', 'constraints' => '', 'position' => 5), //
-        array('name' => 'styla_image_height', 'type' => 'str', 'value' => '320', 'group' => 'styla_feed', 'constraints' => '', 'position' => 6), //
-        array('name' => 'styla_extra_attributes', 'type' => 'str', 'value' => '', 'group' => 'styla_feed', 'constraints' => '', 'position' => 7), //
-        array('name' => 'styla_feed_cache_ttl', 'type' => 'str', 'value' => '3600', 'group' => 'styla_feed', 'constraints' => '', 'position' => 8), //
+        array('name' => 'styla_page_size', 'type' => 'str', 'value' => '10', 'group' => 'styla_feed', 'constraints' => '', 'position' => 3),
+        array('name' => 'styla_image_attribute', 'type' => 'str', 'value' => 'image', 'group' => 'styla_feed', 'constraints' => '', 'position' => 4),
+        array('name' => 'styla_image_width', 'type' => 'str', 'value' => '320', 'group' => 'styla_feed', 'constraints' => '', 'position' => 5),
+        array('name' => 'styla_image_height', 'type' => 'str', 'value' => '320', 'group' => 'styla_feed', 'constraints' => '', 'position' => 6),
+        array('name' => 'styla_extra_attributes', 'type' => 'str', 'value' => '', 'group' => 'styla_feed', 'constraints' => '', 'position' => 7),
+        array('name' => 'styla_feed_cache_ttl', 'type' => 'str', 'value' => '3600', 'group' => 'styla_feed', 'constraints' => '', 'position' => 8),
+        array('name' => 'styla_feed_search_cols', 'type' => 'arr', 'value' => array('oxtitle', 'oxshortdesc', 'oxid', 'oxartnum', 'oxean'), 'group' => 'styla_feed', 'constraints' => '', 'position' => 9),
+        array('name' => 'styla_feed_sorting', 'type' => 'arr', 'value' => '', 'group' => 'styla_feed', 'constraints' => '', 'position' => 10),
+        array('name' => 'styla_feed_brand', 'type' => 'select', 'value' => 'none', 'group' => 'styla_feed', 'constraints' => 'none|oxmanufacturer|oxvendor', 'position' => 11),
     ),
     'events'      => array(
         'onActivate'    => array('Styla_Setup', 'install'),

@@ -140,6 +140,14 @@ There are no known blockers or conflicts making the installation of the plugin i
 
 ## Release Notes
 
+### V1.5.2
+- Feature: "Enable Product API" activated automatically, checkbox not displayed
+- Feature: Field for Styla-backend productsearch
+- Feature: Include manufacturer/vendor in productname
+- Feature: Variant sorting
+- Feature: Endpoint for to check module-version at `/styla-plugin-version/`
+- Bugfix: Feed-Productview has to show variants
+
 ### V1.5.1
 - Bugfix: Improve product images via sku / product id
 
