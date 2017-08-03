@@ -278,6 +278,7 @@ class Styla_Feed extends oxUBase
         $data["id"] = $oArticle->getId();
         $data["price"] = $sPrice;
         $data["finalprice"] = $finalPrice;
+        $data["categories"] = $oArticle->getCategoryIds();
 
         # Currently we only use saleable true / false as indicator not the qty, but maybe for the future
         #$data["minqty"] = 1;
