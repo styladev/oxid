@@ -111,7 +111,8 @@ class Styla_Magazine extends oxUBase
         $styla_version_arr['version'] = $oModule->getInfo('version');
 
         oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . oxRegistry::getLang()->translateString("charset"));
-        die(json_encode($styla_version_arr));
+        echo json_encode($styla_version_arr);
+        exit;
     }
 
     /**
