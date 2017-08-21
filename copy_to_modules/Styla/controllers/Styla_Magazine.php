@@ -104,14 +104,14 @@ class Styla_Magazine extends oxUBase
      */
     public function getPluginVersion()
     {
-        // get version from metadata
         $oModule = oxNew('oxmodule');
         $oModule->load('Styla');
 
-        $aData = array('version' => $oModule->getInfo('version'));
+        $styla_version_arr = array();
+        $styla_version_arr['version'] = $oModule->getInfo('version');
 
         oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . oxRegistry::getLang()->translateString("charset"));
-        die(json_encode($aData));
+        die(json_encode($styla_version_arr));
     }
 
     /**
