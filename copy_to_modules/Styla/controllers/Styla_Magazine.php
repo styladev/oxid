@@ -100,22 +100,6 @@ class Styla_Magazine extends oxUBase
     }
 
     /**
-     * Entry point getVersion API
-     */
-    public function getPluginVersion()
-    {
-        $oModule = oxNew('oxmodule');
-        $oModule->load('Styla');
-
-        $styla_version_arr = array();
-        $styla_version_arr['version'] = $oModule->getInfo('version');
-
-        oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . oxRegistry::getLang()->translateString("charset"));
-        echo json_encode($styla_version_arr);
-        exit;
-    }
-
-    /**
      * Returns the standard OXID page title if the corresponding setting is checked.
      * Returns only the Styla title otherwise
      *

@@ -15,7 +15,6 @@ class Styla_Setup
 
     protected static $_aMagazineUrls = array(
         array('orig_url' => 'index.php?cl=Styla_Magazine', 'seo_action' => ''),
-        array('orig_url' => 'index.php?cl=Styla_Magazine&fnc=getPluginVersion', 'seo_action' => 'version/'),
     );
 
     /**

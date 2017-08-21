@@ -150,7 +150,11 @@ class Styla_Feed extends oxUBase
     public function showVersion()
     {
         // output as string
-        die($this->oModule->getInfo('version'));
+        $styla_version_arr = array();
+        $styla_version_arr['version'] = $this->oModule->getInfo('version');
+        oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . oxRegistry::getLang()->translateString("charset"));
+        echo json_encode($styla_version_arr);
+        exit;
     }
 
     public function _checkApiKey()
