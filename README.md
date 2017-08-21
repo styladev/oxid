@@ -140,6 +140,10 @@ There are no known blockers or conflicts making the installation of the module i
 
 ## Release Notes
 
+### V1.5.4
+- Bugfix: Changed version endpoint structure
+- Bugfix: Changed module name and description
+
 ### V1.5.3
 - Feature: Added category id's to product details response
 

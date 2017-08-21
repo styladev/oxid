@@ -1,3 +1,3 @@
 <?php
 $this->applicationId = 'STYLA';
-$this->moduleVersion = '1.5.3';
+$this->moduleVersion = '1.5.4';
