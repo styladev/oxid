@@ -1,6 +1,6 @@
 # Styla Oxid Plugin
 
-This plugin provides the magazine functionality to your oxid shop. It accepts all requests on the configured base directory and generate a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable content including meta information. Additional it provides a product feed to use your own products in the styla editor.
+This plugin provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The plugin also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.
 
 The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the plugin does and how it exchanges data with Styla. 
 
@@ -15,7 +15,9 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 
 ## Requirements
 
-OXID version 5.1.1 or later
+OXID version 5.1.1 or later.
+
+Since OXID itself does not run on PHP7, we haven't tested on this PHP version.
 
 ## Installation
 
