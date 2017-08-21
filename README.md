@@ -140,6 +140,9 @@ There are no known blockers or conflicts making the installation of the plugin i
 
 ## Release Notes
 
+### V1.5.3
+- Feature: Added category id's to product details response
+
 ### V1.5.2
 - Feature: "Enable Product API" activated automatically, checkbox not displayed
 - Feature: Field for Styla-backend productsearch
