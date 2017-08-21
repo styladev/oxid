@@ -1,14 +1,14 @@
-# Styla Oxid Plugin
+# Styla Oxid Module
 
-This plugin provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The plugin also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.
+This module provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The module also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.
 
-The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the plugin does and how it exchanges data with Styla. 
+The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the module does and how it exchanges data with Styla. 
 
 ## Table of Contents  
 [Requirements](#requirements)   
 [Installation](#installation)   
 [Updating to the latest version](#updating-to-the-latest-version)   
-[Database fields used by the plugin](#database-fields-used-by-the-plugin)   
+[Database fields used by the module](#database-fields-used-by-the-plugin)   
 [Known interactions with other OXID modules](#known-interactions-with-other-oxid-modules)   
 [Custom extensions or modifications](#custom-extensions-or-modifications)    
 [Release Notes](#release-notes)    
@@ -23,17 +23,17 @@ Since OXID itself does not run on PHP7, we haven't tested on this PHP version.
 
 1. Copy the contents of *copy_to_modules* into the *modules* directory on your OXID installation.
 
-2. Activate the plugin via the OXID admin interface under settings **Extensions -> Modules**:
-![Activate Plugin](/readme/readme_activate.png)
+2. Activate the module via the OXID admin interface under settings **Extensions -> Modules**:
+![Activate Module](/readme/readme_activate.png)
 
-3. Configurate your styla username (provided by your account manager) in the Styla plugin:
+3. Configurate your styla username (provided by your account manager) in the Styla module:
 ![Configure Username](/readme/readme_styla_username.png)
 
-4. Enable product api and configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed plugin (please send this to your account manager - so we can enable your products in the styla editor):
+4. Enable product api and configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed module (please send this to your account manager - so we can enable your products in the styla editor):
 ![Configurate Api Key](/readme/readme_api_key.png)
 
 
-### Please do not create any subpages in your CMS or directories for your magazine. The plugin itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well.
+### Please do not create any subpages in your CMS or directories for your magazine. The module itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well.
 
 ## Updating to the latest version
 
@@ -48,7 +48,7 @@ The sequence when updating shoud be as follows:
 
 ### Important if updating to V1.5.0 or later
 
-Until V1.5.0 the plugin consisted of two modules installed separately. They were merged to just one module in V1.5.0 and will stay so. If the two modules are already installed then you should stick to the following sequence when updating to V1.5.0 or later:
+Until V1.5.0 the module consisted of two modules installed separately. They were merged to just one module in V1.5.0 and will stay so. If the two modules are already installed then you should stick to the following sequence when updating to V1.5.0 or later:
 
 1. Install the new module:
 ![Install the new module](/readme/0-initial.png)
@@ -64,10 +64,10 @@ Until V1.5.0 the plugin consisted of two modules installed separately. They were
 
 If you go through these steps in a different sequence, this might lead to problems.  
 
-## Database fields used by the plugin
+## Database fields used by the module
 
 The following database fields of the standard OXID shop system are being
-used by the StylaFeed plugin:
+used by the StylaFeed module:
 
 ### For the generation of an article list
 
@@ -132,11 +132,11 @@ However, some shop-specific changes can lead to deviations between estimated and
 
 *	If specific adjustments are desired in the Styla feed, the relevant methods can also be extended in the OXID way in `\Styla_Feed`
 
-There are no known blockers or conflicts making the installation of the plugin impossible. 
+There are no known blockers or conflicts making the installation of the module impossible. 
 
 ## Custom extensions or modifications
 
-[Read more about extending the plugin!](/copy_to_modules/Styla/Extending.md)
+[Read more about extending the module!](/copy_to_modules/Styla/Extending.md)
 
 ## Release Notes
 
