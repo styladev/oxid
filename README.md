@@ -140,6 +140,9 @@ There are no known blockers or conflicts making the installation of the module i
 
 ## Release Notes
 
+### V1.5.5
+- Bugfix: Changed module name back to Styla to make sure previous configuration stays available
+
 ### V1.5.4
 - Bugfix: Changed version endpoint structure
 - Bugfix: Changed module name and description
