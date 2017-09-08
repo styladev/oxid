@@ -64,14 +64,14 @@ Until V1.5.0 the module consisted of two modules installed separately. They were
 
 If you go through these steps in a different sequence, this might lead to problems.  
 
+### Important if updating to V1.5.2 or later
+
+If you have recently updated the module and product search in Styla Backoffice returns all products, even those not matching your search query, please simply save the module settings in OXID admin panel in: Extensions > Modules > Styla > Settings > SAVE. The search behaviour should then go back to normal and return only products matching your query.
+
 ## Database fields used by the module
 
 The following database fields of the standard OXID shop system are being
 used by the StylaFeed module:
-
-### Important if updating to V1.5.2 or later
-
-If you have recently updated the module and product search in Styla Backoffice returns all products, even those not matching your search query, please simply save the module settings in OXID admin panel in: Extensions > Modules > Styla > Settings > SAVE. The search behaviour should then go back to normal and return only products matching your query.
 
 ### For the generation of an article list
 
