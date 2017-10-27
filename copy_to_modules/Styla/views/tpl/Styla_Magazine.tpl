@@ -11,9 +11,10 @@
 
 [{capture append="oxidBlock_content"}]
 
-[{$styla_div}]
 [{$noscript_content}]
 
+<div id="stylaMagazine"></div>
+    <div id="amazineEmbed"></div>
 [{/capture}]
 
 [{include file="layout/page.tpl"}]
