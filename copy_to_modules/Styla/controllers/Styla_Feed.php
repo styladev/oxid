@@ -295,6 +295,12 @@ class Styla_Feed extends oxUBase
             }
         }
 
+        // Price template
+        $data["priceTemplate"] = $this->_getPriceTemplate();
+
+        // Article Tax
+        $data["tax"] = $this->_getArticleTax($oArticle);
+
         $data["name"] = $this->_filterText($oArticle->oxarticles__oxtitle->value);
         if ($sBrand = $this->_getArticleBrand($oArticle)) {
             $data["brand"] = $sBrand;
@@ -320,6 +326,56 @@ class Styla_Feed extends oxUBase
             }
         }
         return $data;
+    }
+
+    /**
+     * _getPriceTemplate
+     * -----------------------------------------------------------------------------------------------------------------
+     * The template of the price and the currency for ex. "#{price} €"
+     *
+     * @compatibleOxidVersion 5.2.x
+     *
+     * @return string
+     */
+    protected function _getPriceTemplate(){
+
+        $currency = $this->getConfig()->getActShopCurrencyObject();
+        $currencySign = isset( $currency->sign ) ? $currency->sign : '';
+        $side = isset( $currency->side ) ? $currency->side : '';
+        $baseTplPrice = "#{price}";
+
+        return $side == 'Front' ? $currencySign . $baseTplPrice : $baseTplPrice. " " . $currencySign;
+    }
+
+    /**
+     * _getArticleTax
+     * -----------------------------------------------------------------------------------------------------------------
+     * Get tax rate for particular article and related info
+     *
+     * @compatibleOxidVersion 5.2.x
+     *
+     * @param $oArticle oxArticle
+     * @return array
+     */
+    protected function _getArticleTax($oArticle)
+    {
+        if ($this->isVatIncluded()) {
+            $taxIncluded = true;
+            $oLang = oxRegistry::getLang();
+            $label = $oLang->translateString('INCLUDE_VAT', $oLang->getBaseLanguage());
+        } else {
+            $taxIncluded = false;
+            $label = "";
+        }
+
+        $showLabel = (bool) $this->getConfig()->getConfigParam('styla_feed_vat_showlabel');
+
+        return array(
+            "rate" => $oArticle->getArticleVat(),
+            "label" => $label,
+            "taxIncluded" => $taxIncluded,
+            "showLabel" => $showLabel,
+        );
     }
 
     /**
