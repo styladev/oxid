@@ -7,7 +7,7 @@ $aModule = array(
     'title'       => 'Styla',
     'description' => 'This module provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The module also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.',
     'thumbnail'   => 'logo.png',
-    'version'     => '1.5.5',
+    'version'     => '1.5.6',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
@@ -49,6 +49,7 @@ $aModule = array(
         array('name' => 'styla_feed_search_cols', 'type' => 'arr', 'value' => array('oxtitle', 'oxshortdesc', 'oxid', 'oxartnum', 'oxean'), 'group' => 'styla_feed', 'constraints' => '', 'position' => 9),
         array('name' => 'styla_feed_sorting', 'type' => 'arr', 'value' => '', 'group' => 'styla_feed', 'constraints' => '', 'position' => 10),
         array('name' => 'styla_feed_brand', 'type' => 'select', 'value' => 'none', 'group' => 'styla_feed', 'constraints' => 'none|oxmanufacturer|oxvendor', 'position' => 11),
+        array('name' => 'styla_feed_vat_showlabel', 'type' => 'bool', 'value' => '1', 'group' => 'styla_feed', 'constraints' => '', 'position' => 12), //
     ),
     'events'      => array(
         'onActivate'    => array('Styla_Setup', 'install'),

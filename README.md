@@ -2,7 +2,7 @@
 
 This module provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The module also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.
 
-The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the module does and how it exchanges data with Styla. 
+The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the module does and how it exchanges data with Styla.
 
 ## Table of Contents  
 [Requirements](#requirements)   
@@ -104,7 +104,7 @@ oxarticles.oxvat, oxvarminprice.
 
 ```
 oxcategories.oxid, oxcategories.oxtitle, oxcategories.oxshortdesc, sub-kategorien,
-oxseo.oxseourl (assigned seo-url) 
+oxseo.oxseourl (assigned seo-url)
 ```
 
 ### For SEO URLs
@@ -113,11 +113,11 @@ The methods stylaSEO onActivate and stylaFEED onActivate create static SEO URLS,
 are being written into the oxseo table. These are the following (depending on the module
 settings in the backend of OXID):
 
-stylaSEO: 
+stylaSEO:
 ```
 magazine/, magazine/tag/, magazine/story/
 ```
-stylaFEED: 
+stylaFEED:
 ```
 magazine/index/, magazine/index/category/, magazine/index/product/
 ```
@@ -128,21 +128,25 @@ Generally speaking, external modules do not cause problems with the Styla module
 
 However, some shop-specific changes can lead to deviations between estimated and actual behavior, especially in the following cases:
 
-*	Usage of external search solutions (Celebros, Findologic, etc.) may cause different search results in the Styla feed than with the same search phrase using the shops own search 
+*	Usage of external search solutions (Celebros, Findologic, etc.) may cause different search results in the Styla feed than with the same search phrase using the shops own search
 
-*	Adjustments in the product logic like variants, prices, availability/saleability. To display such adjustments in Styla, the relevant standard OXID methods must be  extended 
+*	Adjustments in the product logic like variants, prices, availability/saleability. To display such adjustments in Styla, the relevant standard OXID methods must be  extended
 
 *	(`getSqlActiveSnippet`, `getVariantsQuery` and similar)
 
 *	If specific adjustments are desired in the Styla feed, the relevant methods can also be extended in the OXID way in `\Styla_Feed`
 
-There are no known blockers or conflicts making the installation of the module impossible. 
+There are no known blockers or conflicts making the installation of the module impossible.
 
 ## Custom extensions or modifications
 
 [Read more about extending the module!](/copy_to_modules/Styla/Extending.md)
 
 ## Release Notes
+
+### V1.5.6
+- Feature: New field "priceTemplate" for product details endpoint
+- Feature: New object “tax” for product details endpoint
 
 ### V1.5.5
 - Bugfix: Changed module name back to Styla to make sure previous configuration stays available
