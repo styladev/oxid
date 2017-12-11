@@ -141,10 +141,8 @@ There are no known blockers or conflicts making the installation of the module i
 ## Release Notes
 
 ### V1.5.6
-- Task: Prüfung Produktsuche
-- Task: Neues Feld "priceTemplate" beim Einzelprodukt-Endpunkt
-- Task: Neues Objekt “tax” beim Einzelprodukt-Endpunkt
-- Task: E-Mail "Farbennamen für Einzelprodukte in OXID"
+- Feature: New field "priceTemplate" for product details endpoint
+- Feature: New object “tax” for product details endpoint
 
 ### V1.5.4
 - Bugfix: Changed version endpoint structure
