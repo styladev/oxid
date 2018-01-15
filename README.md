@@ -26,11 +26,13 @@ Since OXID itself does not run on PHP7, we haven't tested on this PHP version.
 2. Activate the module via the OXID admin interface under settings **Extensions -> Modules**:
 ![Activate Module](/readme/readme_activate.png)
 
-3. Configurate your styla username (provided by your account manager) in the Styla module:
+3. Configure your styla username (provided by your account manager) in the Styla module:
 ![Configure Username](/readme/readme_styla_username.png)
 
-4. Enable product api and configurate a random string (should be between 6 and 30 characters) as api key in the Styla Feed module (please send this to your account manager - so we can enable your products in the styla editor):
-![Configurate Api Key](/readme/readme_api_key.png)
+4. Change the base directory (URL in which the magazine will be displayed: 
+
+5. Enable product api and configure a random string (should be between 6 and 30 characters) as api key in the Styla Feed module (please send this to your account manager - so we can enable your products in the styla editor):
+![Configure Api Key](/readme/readme_api_key.png)
 
 
 ### Please do not create any subpages in your CMS or directories for your magazine. The module itself will take care of setting up the /magazine/ (or any other) page on which the magazine will appear and of the roouting as well.
