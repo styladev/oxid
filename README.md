@@ -29,7 +29,7 @@ Since OXID itself does not run on PHP7, we haven't tested on this PHP version.
 3. Configure your styla username (provided by your account manager) in the Styla module:
 ![Configure Username](/readme/readme_styla_username.png)
 
-4. Change the base directory (URL in which the magazine will be displayed: 
+4. Change the base directory (URL in which the magazine will be displayed 
 
 5. Enable product api and configure a random string (should be between 6 and 30 characters) as api key in the Styla Feed module (please send this to your account manager - so we can enable your products in the styla editor):
 ![Configure Api Key](/readme/readme_api_key.png)
