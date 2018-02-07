@@ -17,6 +17,7 @@ class Styla_Feed extends oxUBase
     public function init()
     {
         parent::init();
+
         $this->resize_imagepath = rtrim($this->getConfig()->getPicturePath(null), '/') . '/stylafeed/';
         if (!file_exists($this->resize_imagepath)) {
             @mkdir($this->resize_imagepath);
@@ -26,20 +27,24 @@ class Styla_Feed extends oxUBase
         $this->oUtil = oxNew('Styla_Util');
     }
 
+    /**
+     * Sets appropriate http headers and assigns the template variables
+     * Template is fetched and printed directly
+     */
     public function render()
     {
         parent::render();
+
         if ($this->_sError == 'API KEY INVALID') {
             oxRegistry::getUtils()->setHeader("HTTP/1.0 401 Unauthorized");
         }
         oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . oxRegistry::getLang()->translateString("charset"));
 
-        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-
         $this->_aViewData['errmsg'] = $this->_sError;
         $this->_aViewData['haserror'] = $this->_sError !== false;
         $this->_aViewData['data'] = $this->aData;
 
+        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
         foreach (array_keys($this->_aViewData) as $sViewName) {
             $oSmarty->assign_by_ref($sViewName, $this->_aViewData[$sViewName]);
         }
@@ -49,6 +54,12 @@ class Styla_Feed extends oxUBase
         );
     }
 
+    /**
+     * Default overview page, lists all articles
+     * Can be filtered by words, categories and article numbers
+     *
+     * @throws oxFileException
+     */
     public function showAll()
     {
         $this->_checkApiKey();
@@ -97,13 +108,11 @@ class Styla_Feed extends oxUBase
         $this->_aViewData['action'] = 'default';
     }
 
+    /**
+     * Shows detailed information for the given product
+     */
     public function showProduct()
     {
-        // $this->_checkApiKey();
-
-        if ($this->_sError)
-            return;
-
         $sku = oxRegistry::getConfig()->getRequestParameter('sku');
 
         if (!$product_data = $this->oUtil->loadFromCache('stylafeed_article-' . $sku, 'feed')) {
@@ -115,6 +124,7 @@ class Styla_Feed extends oxUBase
                 $sSelect .= ' ORDER BY OXPARENTID'; // Make sure the parent (if we got one) is selected first
                 if (!$oArticle->assignRecord($sSelect)) {
                     $this->_sError = 'PRODUCT NOT FOUND';
+
                     return;
                 }
             }
@@ -127,6 +137,9 @@ class Styla_Feed extends oxUBase
         $this->_aViewData['action'] = 'product';
     }
 
+    /**
+     * Lists all categories as a tree
+     */
     public function showCategories()
     {
         $this->_checkApiKey();
@@ -147,6 +160,9 @@ class Styla_Feed extends oxUBase
         $this->_aViewData['action'] = 'category';
     }
 
+    /**
+     * Prints Styla module version directly and exits
+     */
     public function showVersion()
     {
         // output as string
@@ -157,6 +173,9 @@ class Styla_Feed extends oxUBase
         exit;
     }
 
+    /**
+     * Compares the given API key with the saved one
+     */
     public function _checkApiKey()
     {
         $api_key = oxRegistry::getConfig()->getRequestParameter('key');
@@ -167,17 +186,16 @@ class Styla_Feed extends oxUBase
 
     protected function _getArticleItems(oxArticleList $oList)
     {
-        $myUtilsUrl = oxRegistry::get("oxUtilsUrl");
         $aItems = array();
+        $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
         $oLang = oxRegistry::getLang();
-        $cfg = $this->getConfig();
+        $oConfig = $this->getConfig();
         $oUtilsPic = oxRegistry::get("oxUtilsPic");
+        $oActCur = $this->_getStylaCurrency();
 
+        /** @var oxArticle $oArticle */
         foreach ($oList as $oArticle) {
             $oItem = array();
-            $oActCur = $this->getConfig()->getActShopCurrencyObject();
-            $oActCur->thousand = ''; // SMO-7 No thousand separator
-            $oActCur->dec = '.'; // SMO-7 dec separator fixed to '.'
 
             $sPrice = '';
             $sFinalPrice = '';
@@ -189,7 +207,7 @@ class Styla_Feed extends oxUBase
             }
 
             foreach ($oArticle->getCategoryIds() as $cat_id) {
-                $category = oxNew('oxcategory');
+                $category = oxNew('oxCategory');
                 $category->load($cat_id);
                 $oItem['category'][] = $category->oxcategories__oxtitle->value;
             }
@@ -202,26 +220,26 @@ class Styla_Feed extends oxUBase
             $oItem["shortdescription"] = $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
             $oItem["price"] = $sFinalPrice;
             $oItem["amount"] = $sPrice;
-            $oItem["url"] = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
-            $oItem["saleable"] = $oArticle->oxarticles__oxstock->value > 0; // Currently only active and in stock items are returned
+            $oItem["url"] = $oUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
+            $oItem["saleable"] = $this->_isArticleSaleable($oArticle);
             $oItem["type_id"] = $this->_hasVariants($oArticle) ? "configurable" : "simple";
 
             $oItem["image_org"] = $oArticle->getPictureUrl();
             $oItem["images"] = $this->_getArticleImages($oArticle);
-            $imgname = $oArticle->oxarticles__oxpic1->value;
-            $imgpath_source = '';
-            if (!empty($imgname)) {
-                $imgpath_source = $cfg->getMasterPictureDir() . 'product/1/' . $imgname;
+            $imgName = $oArticle->oxarticles__oxpic1->value;
+            $imgPath_source = '';
+            if (!empty($imgName)) {
+                $imgPath_source = $oConfig->getMasterPictureDir() . 'product/1/' . $imgName;
             }
-            $imgpath_target = $this->resize_imagepath . $oArticle->getId() . '_' . $imgname;
-            $iCacheTtl = $cfg->getConfigParam('styla_feed_ttl');
-            if (file_exists($imgpath_source) && (!file_exists($imgpath_target) || (time() - filemtime($imgpath_target) > $iCacheTtl))) { // regenerate resized images if older than cache ttl
-                $resize_image = $oUtilsPic->resizeImage($imgpath_source, $imgpath_target, $cfg->getConfigParam('styla_image_width'), $cfg->getConfigParam('styla_image_height'));
+            $imgPath_target = $this->resize_imagepath . $oArticle->getId() . '_' . $imgName;
+            $iCacheTtl = $oConfig->getConfigParam('styla_feed_ttl');
+            if (file_exists($imgPath_source) && (!file_exists($imgPath_target) || (time() - filemtime($imgPath_target) > $iCacheTtl))) { // regenerate resized images if older than cache ttl
+                $resize_image = $oUtilsPic->resizeImage($imgPath_source, $imgPath_target, $oConfig->getConfigParam('styla_image_width'), $oConfig->getConfigParam('styla_image_height'));
                 if (!$resize_image) {
-                    throw new oxFileException('Unable to resize image ' . $imgpath_source);
+                    throw new oxFileException('Unable to resize image ' . $imgPath_source);
                 }
             }
-            $resize_image_url = $cfg->getPictureUrl(null) . 'stylafeed/' . $oArticle->getId() . '_' . $imgname;
+            $resize_image_url = $oConfig->getPictureUrl(null) . 'stylafeed/' . $oArticle->getId() . '_' . $imgName;
             $oItem["image"] = $resize_image_url;
             $aItems[] = $oItem;
         }
@@ -254,6 +272,7 @@ class Styla_Feed extends oxUBase
             $pageSize,
             $this->getSortingSql($this->getSortIdent())
         );
+
         return $oSearchList;
     }
 
@@ -264,11 +283,9 @@ class Styla_Feed extends oxUBase
      */
     protected function _getProductDetails($oArticle)
     {
-        $myUtilsUrl = oxRegistry::get("oxUtilsUrl");
+        $oUtilsUrl = oxRegistry::get("oxUtilsUrl");
         $oLang = oxRegistry::getLang();
-        $oActCur = $this->getConfig()->getActShopCurrencyObject();
-        $oActCur->thousand = ''; // SMO-7 No thousand separator
-        $oActCur->dec = '.'; // SMO-7 dec separator fixed to '.'
+        $oActCur = $this->_getStylaCurrency();
 
         $data = array();
 
@@ -306,45 +323,47 @@ class Styla_Feed extends oxUBase
             $data["brand"] = $sBrand;
         }
         $data["description"] = $this->_filterText($oArticle->oxarticles__oxshortdesc->value);
-        $data["pageUrl"] = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
-        $data["saleable"] = $oArticle->oxarticles__oxstock->value > 0; // Currently only active and in stock items are returned
+        $data["pageUrl"] = $oUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
+        $data["saleable"] = $this->_isArticleSaleable($oArticle);
         $hasVariants = $this->_hasVariants($oArticle);
         if ($hasVariants) {
             $data["attributes"] = $this->_getVariantsData($oArticle);
             # Update top-level saleable depeding on if any variant is saleable
             $data["saleable"] = $this->_isParentProductSaleable($data);
+
+            // SMO-76: Don't show empty attributes node if product has no saleable variants
+            if (!$data["saleable"]) {
+                unset($data['attributes']);
+            }
         }
         $data["type"] = $hasVariants ? "configurable" : "simple";
 
-        $extra_attrs = $this->getConfig()->getConfigParam('styla_extra_attributes');
-        if ($extra_attrs) {
-            $arr_attrs = explode(',', $extra_attrs);
+        $extraAttributes = $this->getConfig()->getConfigParam('styla_extra_attributes');
+        if ($extraAttributes) {
+            $aAttributes = explode(',', $extraAttributes);
 
-            foreach ($arr_attrs as $att) {
+            foreach ($aAttributes as $att) {
                 $key = 'oxarticles__ox' . $att;
                 $data[$att] = $oArticle->$key->value;
             }
         }
+
         return $data;
     }
 
     /**
-     * _getPriceTemplate
-     * -----------------------------------------------------------------------------------------------------------------
      * The template of the price and the currency for ex. "#{price} €"
-     *
-     * @compatibleOxidVersion 5.2.x
      *
      * @return string
      */
-    protected function _getPriceTemplate(){
-
-        $currency = $this->getConfig()->getActShopCurrencyObject();
-        $currencySign = isset( $currency->sign ) ? $currency->sign : '';
-        $side = isset( $currency->side ) ? $currency->side : '';
+    protected function _getPriceTemplate()
+    {
+        $currency = $this->_getStylaCurrency();
+        $currencySign = isset($currency->sign) ? $currency->sign : '';
+        $side = isset($currency->side) ? $currency->side : '';
         $baseTplPrice = "#{price}";
 
-        return $side == 'Front' ? $currencySign . $baseTplPrice : $baseTplPrice. " " . $currencySign;
+        return $side == 'Front' ? $currencySign . $baseTplPrice : $baseTplPrice . " " . $currencySign;
     }
 
     /**
@@ -371,11 +390,25 @@ class Styla_Feed extends oxUBase
         $showLabel = (bool) $this->getConfig()->getConfigParam('styla_feed_vat_showlabel');
 
         return array(
-            "rate" => $oArticle->getArticleVat(),
-            "label" => $label,
+            "rate"        => $oArticle->getArticleVat(),
+            "label"       => $label,
             "taxIncluded" => $taxIncluded,
-            "showLabel" => $showLabel,
+            "showLabel"   => $showLabel,
         );
+    }
+
+    /**
+     * Uses OXIDs getStockCheckQuery to check if a given article is saleable
+     *
+     * @param oxArticle $oArticle
+     * @return bool
+     */
+    protected function _isArticleSaleable($oArticle)
+    {
+        $view = $oArticle->getViewName();
+        $query = "SELECT 1 FROM $view WHERE $view.OXID = ? " . $oArticle->getStockCheckQuery();
+
+        return (bool) oxDb::getDb()->getOne($query, array($oArticle->getId()));
     }
 
     /**
@@ -406,6 +439,11 @@ class Styla_Feed extends oxUBase
     protected function _isParentProductSaleable($data)
     {
         foreach ($data["attributes"] as $attrKey => $attrVal) {
+            // Check value to prevent PHP warnings
+            if (!isset($attrVal['options']) || !is_array($attrVal['options'])) {
+                break;
+            }
+
             foreach ($attrVal["options"] as $optionsKey => $optionsVal) {
                 foreach ($optionsVal["products"] as $productKey => $productVal) {
                     if ($productVal["saleable"] == true) {
@@ -414,6 +452,7 @@ class Styla_Feed extends oxUBase
                 }
             }
         }
+
         return false;
     }
 
@@ -429,6 +468,7 @@ class Styla_Feed extends oxUBase
         foreach ($aVarNames as $sKey => $sVarName) {
             if (trim($sVarName) != '') return true;
         }
+
         return false;
     }
 
@@ -444,6 +484,9 @@ class Styla_Feed extends oxUBase
         // setConfigParam does not save to DB so the next page load uses the normal setting
         $this->getConfig()->setConfigParam('blLoadVariants', true);
 
+        $oActCur = $this->_getStylaCurrency();
+        $oLang = oxRegistry::getLang();
+
         $aAttributes = array();
 
         $oParent = $oArticle;
@@ -456,13 +499,10 @@ class Styla_Feed extends oxUBase
             $aAttributes[$sKey]['id'] = md5($sVarName);
             $aAttributes[$sKey]['label'] = $sVarName;
 
+            /** @var oxArticle $oVariant */
             foreach ($aVariants as $oVariant) {
                 $aVarSelect = explode('|', $oVariant->oxarticles__oxvarselect->rawValue);
                 $sProductId = $oVariant->getId();
-                $oLang = oxRegistry::getLang();
-                $oActCur = oxRegistry::getConfig()->getActShopCurrencyObject();
-                $oActCur->thousand = ''; // SMO-7 No thousand separator
-                $oActCur->dec = '.'; // SMO-7 dec separator fixed to '.'
 
                 $sPrice = '';
                 $sTPrice = '';
@@ -483,7 +523,7 @@ class Styla_Feed extends oxUBase
                         $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['id'] = $sProductId;
                         $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['price'] = $sPrice;
                         $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['oldPrice'] = $sTPrice;
-                        $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['saleable'] = $oVariant->oxarticles__oxstock->value > 0;
+                        $aAttributes[$sKey]['options'][$sVarSelectId]['products'][$sProductId]['saleable'] = $this->_isArticleSaleable($oVariant);
                     }
                 }
             }
@@ -494,9 +534,9 @@ class Styla_Feed extends oxUBase
         // Convert elements 'options' & 'products' to not associative arrays
         // so that later on json_encode will generate arrays instead of objects
         foreach ($aAttributes as $sKey => $aAttribute) {
-            $aAttributes[$sKey]['options'] = array_values($aAttribute['options']);
+            if (isset($aAttribute['options']) && is_array($aAttribute['options'])) {
+                $aAttributes[$sKey]['options'] = array_values($aAttribute['options']);
 
-            if (is_array($aAttributes[$sKey]['options'])) {
                 foreach ($aAttributes[$sKey]['options'] as $sVarSelId => $aOption) {
                     $aAttributes[$sKey]['options'][$sVarSelId]['products'] = array_values($aOption['products']);
                 }
@@ -564,7 +604,7 @@ class Styla_Feed extends oxUBase
 
     /**
      *
-     * @param oxCategory[] $oCatList
+     * @param oxCategory[]|oxCategoryList $oCatList
      * @return array
      */
     protected function _getCategoryItems($oCatList)
@@ -614,6 +654,7 @@ class Styla_Feed extends oxUBase
         $oProperty->setAccessible(true);
         $oProperty->setValue($oArticle, false);
 
+        /** @var oxArticle $oVariant */
         foreach ($oArticle->getVariants(false) as $oVariant) {
             for ($i = 0; $i <= 12; $i++) {
                 $aImages[] = $oVariant->getMasterZoomPictureUrl($i);
@@ -625,5 +666,19 @@ class Styla_Feed extends oxUBase
         $aImages = array_values($aImages); // Reset keys
 
         return $aImages;
+    }
+
+    /**
+     * Helper method to reduce duplicate code by providing the modified currency object directly
+     *
+     * @return object
+     */
+    protected function _getStylaCurrency()
+    {
+        $currency = oxRegistry::getConfig()->getActShopCurrencyObject();
+        $currency->thousand = ''; // SMO-7 No thousand separator
+        $currency->dec = '.'; // SMO-7 dec separator fixed to '.'
+
+        return $currency;
     }
 }
