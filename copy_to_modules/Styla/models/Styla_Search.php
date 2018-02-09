@@ -2,14 +2,15 @@
 
 class Styla_Search extends oxSearch
 {
+    protected $iActPage;
 
     public function getStylaSearchArticles($sSearchParamForQuery = false, $pageNr = 1, $pageSize = 10, $sSortBy)
     {
         $this->iActPage = $pageNr - 1;
-        $iNrofCatArticles = $pageSize;
+        $iNrOfCatArticles = $pageSize;
 
         $oArtList = oxNew('Styla_Articlelist');
-        $oArtList->setSqlLimit($iNrofCatArticles * $this->iActPage, $iNrofCatArticles);
+        $oArtList->setSqlLimit($iNrOfCatArticles * $this->iActPage, $iNrOfCatArticles);
 
         $sSelect = $this->_getSearchSelect($sSearchParamForQuery, false, false, false, $sSortBy);
         if ($sSelect) {
@@ -43,11 +44,11 @@ class Styla_Search extends oxSearch
             $sQ = "select 1 from $sCatTable where $sCatTable.oxid = " . $oDb->quote($sInitialSearchCat) . " ";
             $sQ .= "and " . $oCategory->getSqlActiveSnippet();
             if (!$oDb->getOne($sQ)) {
-                return;
+                return null;
             }
         }
 
-        // performance:
+        // performance
         if ($sInitialSearchVendor) {
             // lets search this vendor - if no such vendor - skip all other code
             $oVendor = oxNew('oxvendor');
@@ -56,11 +57,11 @@ class Styla_Search extends oxSearch
             $sQ = "select 1 from $sVndTable where $sVndTable.oxid = " . $oDb->quote($sInitialSearchVendor) . " ";
             $sQ .= "and " . $oVendor->getSqlActiveSnippet();
             if (!$oDb->getOne($sQ)) {
-                return;
+                return null;
             }
         }
 
-        // performance:
+        // performance
         if ($sInitialSearchManufacturer) {
             // lets search this Manufacturer - if no such Manufacturer - skip all other code
             $oManufacturer = oxNew('oxmanufacturer');
@@ -69,7 +70,7 @@ class Styla_Search extends oxSearch
             $sQ = "select 1 from $sManTable where $sManTable.oxid = " . $oDb->quote($sInitialSearchManufacturer) . " ";
             $sQ .= "and " . $oManufacturer->getSqlActiveSnippet();
             if (!$oDb->getOne($sQ)) {
-                return;
+                return null;
             }
         }
 
@@ -147,21 +148,19 @@ class Styla_Search extends oxSearch
     protected function _getWhere($sSearchString)
     {
         $oDb = oxDb::getDb();
-        $myConfig = $this->getConfig();
+        $oConfig = $this->getConfig();
         $blSep = false;
         $sArticleTable = getViewName('oxarticles', $this->_iLanguage);
 
-        $aSearchCols = $myConfig->getConfigParam('styla_feed_search_cols');
+        $aSearchCols = $oConfig->getConfigParam('styla_feed_search_cols');
         if (!(is_array($aSearchCols) && count($aSearchCols))) {
             return '';
         }
 
-        $oTempArticle = oxNew('oxarticle');
-        $sSearchSep = $myConfig->getConfigParam('blSearchUseAND') ? 'and ' : 'or ';
+        $sSearchSep = $oConfig->getConfigParam('blSearchUseAND') ? 'and ' : 'or ';
         $aSearch = explode(' ', $sSearchString);
         $sSearch = ' and ( ';
         $myUtilsString = oxRegistry::get("oxUtilsString");
-        $oLang = oxRegistry::getLang();
 
         foreach ($aSearch as $sSearchString) {
 

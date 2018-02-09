@@ -14,7 +14,7 @@
 [{$noscript_content}]
 
 <div id="stylaMagazine"></div>
-    <div id="amazineEmbed"></div>
+<div id="amazineEmbed"></div>
 [{/capture}]
 
 [{include file="layout/page.tpl"}]

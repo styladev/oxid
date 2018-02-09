@@ -2,9 +2,9 @@
 
 class Styla_Util
 {
-    const STYLA_URL = 'http://cdn.styla.com';
+    const STYLA_URL = 'https://client-scripts.styla.com';
     const API_STYLA_URL = 'http://live.styla.com';
-    const SEO_URL = 'http://seo.styla.com';
+    const SEO_URL = 'http://seoapi.styla.com';
 
     /**
      * Returns cache ID
@@ -15,6 +15,7 @@ class Styla_Util
     protected function _getCacheId($name)
     {
         $oConfig = oxRegistry::getConfig();
+
         return $name . '_' . $oConfig->getShopId() . '_' . oxRegistry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
     }
 
@@ -33,6 +34,7 @@ class Styla_Util
                 return $aRes['content'];
             }
         }
+
         return false;
     }
 
@@ -46,6 +48,7 @@ class Styla_Util
     public function saveToCache($name, $aContent)
     {
         $aData = array('timestamp' => time(), 'content' => $aContent);
+
         return oxRegistry::getUtils()->toFileCache($this->_getCacheId($name), $aData);
     }
 
@@ -62,6 +65,7 @@ class Styla_Util
             $js_url = self::STYLA_URL;
         }
         $url = preg_filter('/https?:(.+)/i', '$1', (rtrim($js_url, '/') . '/')) . 'scripts/clients/' . $username . '.js?version=' . self::_getVersion($username);
+
         return '<script  type="text/javascript" src="' . $url . '" async></script>';
     }
 
@@ -78,6 +82,7 @@ class Styla_Util
             $css_url = self::STYLA_URL;
         }
         $sCssUrl = preg_filter('/https?:(.+)/i', '$1', (rtrim($css_url, '/') . '/')) . 'styles/clients/' . $username . '.css?version=' . self::_getVersion($username);
+
         return '<link rel="stylesheet" type="text/css" href="' . $sCssUrl . '">';
     }
 
@@ -110,6 +115,7 @@ class Styla_Util
                 }
             } catch (Exception $e) {
                 echo 'ERROR: ' . $e->getMessage();
+
                 return false;
             }
         }
@@ -131,15 +137,21 @@ class Styla_Util
             return $ret;
         }
         $result = json_decode($_res);
+
+        // Try to extract relevant meta tags
         if (isset($result->tags) && count($result->tags)) {
             $ret['meta'] = array();
             foreach ($result->tags as $tag) {
                 if (in_array($tag->tag, array('link', 'meta', 'noscript'), true)) {
-                    if (isset($tag->attributes->name) && in_array($tag->attributes->name, array('description', 'keywords'), true)) {
+                    if (isset($tag->attributes->name)
+                        && in_array($tag->attributes->name, array('description', 'keywords'), true)
+                    ) {
                         $ret[$tag->attributes->name] = $tag->attributes->content;
                     } else {
                         $ret['meta'][] = $tag;
-                        if (isset($tag->attributes->name) && in_array($tag->attributes->name, array('canonical', 'author'), true)) {
+                        if (isset($tag->attributes->name)
+                            && in_array($tag->attributes->name, array('canonical', 'author'), true)
+                        ) {
                             $ret['meta'][$tag->attributes->name] = $tag->attributes->content;
                         }
                     }

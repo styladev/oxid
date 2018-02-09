@@ -29,7 +29,7 @@ Since OXID itself does not run on PHP7, we haven't tested on this PHP version.
 3. Configure your styla username (provided by your account manager) in the Styla module:
 ![Configure Username](/readme/readme_styla_username.png)
 
-4. Change the base directory (URL in which the magazine will be displayed, screen shot above) 
+4. Change the base directory (URL in which the magazine will be displayed, screen shot above)
 
 5. Enable product api and configure a random string (should be between 6 and 30 characters) as api key in the Styla Feed module (please send this to your account manager - so we can enable your products in the styla editor):
 ![Configure Api Key](/readme/readme_api_key.png)
@@ -145,6 +145,12 @@ There are no known blockers or conflicts making the installation of the module i
 [Read more about extending the module!](/copy_to_modules/Styla/Extending.md)
 
 ## Release Notes
+
+### V1.5.7
+- Bugfix: Products of subcategories cannot be found
+- Extension: Changed default API domain, JS Spippet, SEO server URL
+- Task: Adjustments for Styla Productfeed
+- Task: isArticleSaleable OXID standard
 
 ### V1.5.6
 - Feature: New field "priceTemplate" for product details endpoint
