@@ -146,6 +146,9 @@ There are no known blockers or conflicts making the installation of the module i
 
 ## Release Notes
 
+### V1.5.8
+- Task: Allow to use ${language} in styla username to support multiple languages
+
 ### V1.5.7
 - Bugfix: Products of subcategories cannot be found
 - Extension: Changed default API domain, JS Spippet, SEO server URL
