@@ -16,7 +16,6 @@ class Styla_Magazine extends oxUBase
     {
         $this->_oUtil = oxNew('Styla_Util');
         $this->_sUsername = $this->getConfig()->getConfigParam('styla_username');
-        $this->_sUsername = str_replace('${language}', oxRegistry::getLang()->getLanguageAbbr(), $this->_sUsername);
         $this->_sSnippetURL = $this->getConfig()->getConfigParam('styla_js_url');
         $this->_sSnippetURL = rtrim($this->_sSnippetURL, '/') . '/'; // make sure there is always (exactly 1) trailing slash
 
@@ -47,6 +46,8 @@ class Styla_Magazine extends oxUBase
         parent::render();
 
         if (!empty($this->_sUsername)) {
+            $this->_sUsername = str_replace('${language}', oxRegistry::getLang()->getLanguageAbbr(), $this->_sUsername);
+
             $aContent = $this->_oUtil->getRemoteContent($this->_sUsername);
             $this->_aContent = $aContent;
 
