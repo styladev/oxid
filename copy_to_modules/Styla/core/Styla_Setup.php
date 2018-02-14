@@ -60,17 +60,15 @@ class Styla_Setup
         $defaultLang = oxRegistry::getConfig()->getConfigParam('sDefaultLang');
 
         foreach ($aUrls as $aURL) {
+            $sOxID = oxRegistry::get('oxSeoEncoder')->getDynamicObjectId($iShopID, $aURL['orig_url']);
             foreach ($aLanguages as $oLang) {
-                $sOxID = oxRegistry::get('oxUtilsObject')->generateUId();
                 $sLangPrefix = '';
                 if ($oLang->id != $defaultLang) {
                     $sLangPrefix = $oLang->abbr . '/';
                 }
                 $sURL = $sLangPrefix . $sBaseDir . $aURL['seo_action'];
 
-                $sQuery = "INSERT INTO `oxseo` (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, `OXSEOURL`, `OXTYPE`, `OXFIXED`, `OXEXPIRED`, `OXPARAMS`) VALUES
-                  ('" . $sOxID . "', '" . md5(strtolower($sURL)) . "', '" . $iShopID . "', $oLang->id, '" . $aURL['orig_url'] . "', '" . $sURL . "', 'static', 0, 0, '');";
-                oxDb::getDb()->Execute($sQuery);
+                oxRegistry::get('oxSeoEncoder')->addSeoEntry($sOxID, $iShopID, $oLang->id, $aURL['orig_url'], $sURL, 'static', 0);
             }
         }
     }

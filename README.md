@@ -146,6 +146,9 @@ There are no known blockers or conflicts making the installation of the module i
 
 ## Release Notes
 
+### V1.5.9
+- Bugix: Create proper object ids for seo urls 
+
 ### V1.5.8
 - Task: Allow to use ${language} in styla username to support multiple languages
 
