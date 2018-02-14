@@ -46,6 +46,8 @@ class Styla_Magazine extends oxUBase
         parent::render();
 
         if (!empty($this->_sUsername)) {
+            $this->_sUsername = str_replace('${language}', oxRegistry::getLang()->getLanguageAbbr(), $this->_sUsername);
+
             $aContent = $this->_oUtil->getRemoteContent($this->_sUsername);
             $this->_aContent = $aContent;
 
