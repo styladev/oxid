@@ -146,6 +146,9 @@ There are no known blockers or conflicts making the installation of the module i
 
 ## Release Notes
 
+### V1.6.0
+- Task: Added data-rootpath handling to allow one content hub on multiple countries
+
 ### V1.5.9
 - Bugfix: Create proper object ids for seo urls
 - Bugfix: Use breadcrumb link depending on language 
