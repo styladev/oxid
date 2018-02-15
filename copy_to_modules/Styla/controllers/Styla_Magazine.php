@@ -34,7 +34,7 @@ class Styla_Magazine extends oxUBase
         $aPaths = array(
             array(
                 'title' => oxRegistry::getLang()->translateString('Magazine', oxRegistry::getLang()->getBaseLanguage(), false),
-                'link'  => $this->getConfig()->getCurrentShopUrl() . $this->getConfig()->getConfigParam('styla_seo_basedir'),
+                'link'  => $this->getLink(),
             ),
         );
 

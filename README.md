@@ -146,6 +146,10 @@ There are no known blockers or conflicts making the installation of the module i
 
 ## Release Notes
 
+### V1.5.9
+- Bugfix: Create proper object ids for seo urls
+- Bugfix: Use breadcrumb link depending on language 
+
 ### V1.5.8
 - Task: Allow to use ${language} in styla username to support multiple languages
 
