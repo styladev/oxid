@@ -10,7 +10,8 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 [Updating to the latest version](#updating-to-the-latest-version)   
 [Database fields used by the module](#database-fields-used-by-the-plugin)   
 [Known interactions with other OXID modules](#known-interactions-with-other-oxid-modules)   
-[Custom extensions or modifications](#custom-extensions-or-modifications)    
+[Custom extensions or modifications](#custom-extensions-or-modifications)  
+[Setup Process] (#setup-process)
 [Release Notes](#release-notes)    
 
 ## Requirements
@@ -143,6 +144,18 @@ There are no known blockers or conflicts making the installation of the module i
 ## Custom extensions or modifications
 
 [Read more about extending the module!](/copy_to_modules/Styla/Extending.md)
+
+## Setup Process
+
+The process of setting up your Content Hub(s) usually goes as follows:
+
+1. Install and configure the plugin on your stage using Content Hub ID(s) shared by Styla
+2. Share the stage URL, credentials with Styla
+4. Styla integrates product data from Magento REST API, test your stage Content Hub and asks additional questions, if needed
+5. Install and configure the plugin on production, without linking to the Content Hub(s) there and, again, share the URL with Styla
+6. Make sure your content is ready to go live
+7. Styla conducts final User Acceptance Tests before the go-live
+8. Go-live (you link to the Content Hub embedded on your production)
 
 ## Release Notes
 
