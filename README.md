@@ -10,7 +10,7 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 [Updating to the latest version](#updating-to-the-latest-version)   
 [Database fields used by the module](#database-fields-used-by-the-plugin)   
 [Known interactions with other OXID modules](#known-interactions-with-other-oxid-modules)   
-[Custom extensions or modifications](#custom-extensions-or-modifications)   
+[Custom extensions or modifications](#custom-extensions-or-modifications)     
 [Setup Process](#setup-process)   
 [Release Notes](#release-notes)     
 
