@@ -233,13 +233,15 @@ class Styla_Feed extends oxUBase
             }
             $imgPath_target = $this->resize_imagepath . $oArticle->getId() . '_' . $imgName;
             $iCacheTtl = $oConfig->getConfigParam('styla_feed_ttl');
+            $resize_image_url = $oConfig->getPictureUrl(null) . 'stylafeed/' . $oArticle->getId() . '_' . $imgName;
+
             if (file_exists($imgPath_source) && (!file_exists($imgPath_target) || (time() - filemtime($imgPath_target) > $iCacheTtl))) { // regenerate resized images if older than cache ttl
                 $resize_image = $oUtilsPic->resizeImage($imgPath_source, $imgPath_target, $oConfig->getConfigParam('styla_image_width'), $oConfig->getConfigParam('styla_image_height'));
                 if (!$resize_image) {
-                    throw new oxFileException('Unable to resize image ' . $imgPath_source);
+                    //if can not resize - use original image
+                    $resize_image_url =  $oItem["images"][0];
                 }
             }
-            $resize_image_url = $oConfig->getPictureUrl(null) . 'stylafeed/' . $oArticle->getId() . '_' . $imgName;
             $oItem["image"] = $resize_image_url;
             $aItems[] = $oItem;
         }
@@ -638,6 +640,7 @@ class Styla_Feed extends oxUBase
     public function _getArticleImages($oArticle)
     {
         $aImages = array();
+        $bShowAllUrls = $this->getConfig()->getConfigParam('styla_feed_show_variant_urls');
 
         // Use parent article if given one is a variant
         if ($oArticle->isVariant()) {
@@ -646,7 +649,14 @@ class Styla_Feed extends oxUBase
 
         // Get images from oxpic fields from parent and variants
         for ($i = 1; $i <= 12; $i++) {
-            $aImages[] = $oArticle->getMasterZoomPictureUrl($i);
+            if ($bShowAllUrls) {
+                $aImages[] = array(
+                    'image' => $oArticle->getMasterZoomPictureUrl($i),
+                    'url' => $oArticle->getLink(),
+                );
+            } else {
+                $aImages[] = $oArticle->getMasterZoomPictureUrl($i);
+            }
         }
 
         // Needed to load full variants instead of oxSimpleVariant objects
@@ -657,15 +667,53 @@ class Styla_Feed extends oxUBase
         /** @var oxArticle $oVariant */
         foreach ($oArticle->getVariants(false) as $oVariant) {
             for ($i = 0; $i <= 12; $i++) {
-                $aImages[] = $oVariant->getMasterZoomPictureUrl($i);
+                if ($bShowAllUrls) {
+                    $aImages[] = array(
+                        'image' => $oVariant->getMasterZoomPictureUrl($i),
+                        'url' => $oVariant->getLink(),
+                    );
+                } else {
+                    $aImages[] = $oVariant->getMasterZoomPictureUrl($i);
+                }
             }
         }
 
-        $aImages = array_filter($aImages); // Some fields will be empty, remove them
-        $aImages = array_unique($aImages); // Only return each image once
+        if ($bShowAllUrls) {
+            $aImages = array_filter($aImages, function ($aArray){
+                return (bool) $aArray['image']; // Remove if false
+            });
+            $aImages= $this->_uniqueMultiArray($aImages, 'image');
+        } else {
+            $aImages = array_filter($aImages); // Some fields will be empty, remove them
+            $aImages = array_unique($aImages); // Only return each image once
+        }
+
         $aImages = array_values($aImages); // Reset keys
 
         return $aImages;
+    }
+
+    /**
+     * Like array_unique for multi-dimensional arrays
+     *
+     * @link http://php.net/manual/en/function.array-unique.php#116302
+     * @param array  $aArray
+     * @param string $uniqueKey
+     * @return array
+     */
+    protected function _uniqueMultiArray($aArray, $uniqueKey) {
+        $temp_array = array();
+        $i = 0;
+        $key_array = array();
+
+        foreach($aArray as $val) {
+            if (!in_array($val[$uniqueKey], $key_array)) {
+                $key_array[$i] = $val[$uniqueKey];
+                $temp_array[$i] = $val;
+            }
+            $i++;
+        }
+        return $temp_array;
     }
 
     /**
