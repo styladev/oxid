@@ -12,7 +12,7 @@ The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/
 [Known interactions with other OXID modules](#known-interactions-with-other-oxid-modules)   
 [Custom extensions or modifications](#custom-extensions-or-modifications)     
 [Setup Process](#setup-process)   
-[Release Notes](#release-notes)     
+[Release Notes](#release-notes)    
 
 ## Requirements
 
@@ -159,12 +159,16 @@ The process of setting up your Content Hub(s) usually goes as follows:
 
 ## Release Notes
 
+### V1.7.0
+- Extension: Product URL for each picture in search
+- Bugfix: Product API Error-Handling
+
 ### V1.6.0
 - Task: Added data-rootpath handling to allow one content hub on multiple countries
 
 ### V1.5.9
 - Bugfix: Create proper object ids for seo urls
-- Bugfix: Use breadcrumb link depending on language 
+- Bugfix: Use breadcrumb link depending on language
 
 ### V1.5.8
 - Task: Allow to use ${language} in styla username to support multiple languages
