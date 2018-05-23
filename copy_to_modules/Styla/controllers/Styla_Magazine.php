@@ -34,7 +34,7 @@ class Styla_Magazine extends oxUBase
         $aPaths = array(
             array(
                 'title' => oxRegistry::getLang()->translateString('Magazine', oxRegistry::getLang()->getBaseLanguage(), false),
-                'link'  => $this->getConfig()->getCurrentShopUrl() . $this->getConfig()->getConfigParam('styla_seo_basedir'),
+                'link'  => $this->getLink(),
             ),
         );
 
@@ -46,6 +46,8 @@ class Styla_Magazine extends oxUBase
         parent::render();
 
         if (!empty($this->_sUsername)) {
+            $this->_sUsername = str_replace('${language}', oxRegistry::getLang()->getLanguageAbbr(), $this->_sUsername);
+
             $aContent = $this->_oUtil->getRemoteContent($this->_sUsername);
             $this->_aContent = $aContent;
 
@@ -62,8 +64,11 @@ class Styla_Magazine extends oxUBase
                 $this->setMetaKeywords($aContent['meta']['keywords']);
             }
 
+            $magazinePath = substr($this->getLink(), stripos($this->getLink(), '/', 8) + 1);
+
             $this->_aViewData['js_embed'] = $this->_oUtil->getJsEmbedCode($this->_sUsername, $this->_sSnippetURL);
             $this->_aViewData['css_embed'] = $this->_oUtil->getCssEmbedCode($this->_sUsername, $this->_sSnippetURL);
+            $this->_aViewData['styla_div'] = '<div id="stylaMagazine" data-rootpath="'.$magazinePath.'"></div>';
             $this->_aViewData['noscript_content'] = $aContent['noscript_content'];
             $this->_aViewData['meta_author'] = $aContent['meta']['author'];
             $this->_aViewData['meta'] = $this->_createHeaderHtml($aContent['meta']);

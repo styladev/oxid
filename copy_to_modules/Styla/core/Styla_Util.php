@@ -3,8 +3,8 @@
 class Styla_Util
 {
     const STYLA_URL = 'https://client-scripts.styla.com';
-    const API_STYLA_URL = 'https://live.styla.com';
-    const SEO_URL = 'https://seoapi.styla.com';
+    const API_STYLA_URL = 'http://live.styla.com';
+    const SEO_URL = 'http://seoapi.styla.com';
 
     /**
      * Returns cache ID
