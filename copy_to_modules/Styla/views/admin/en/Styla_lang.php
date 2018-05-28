@@ -33,4 +33,5 @@ $aLang = array(
     'SHOP_MODULE_styla_feed_brand_oxmanufacturer'      => 'Manufacturer (oxmanufacturer)',
     'SHOP_MODULE_styla_feed_brand_oxvendor'            => 'Vendor (oxvendor)',
     'SHOP_MODULE_styla_feed_vat_showlabel'             => 'Show VAT inscription in product feed',
+    'SHOP_MODULE_styla_feed_show_variant_urls'         => 'Use variant URLs',
 );

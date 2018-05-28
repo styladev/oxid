@@ -1,5 +1,5 @@
 [{if $haserror}]
-{"error":"[{$haserror}]", "message":"[{$errmsg}]"}
+{"error":true, "message":"[{$errmsg}]"}
 [{else}]
 [{$data|@json_encode}]
 [{/if}]
