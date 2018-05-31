@@ -71,6 +71,18 @@ If you go through these steps in a different sequence, this might lead to proble
 
 If you have recently updated the module and product search in Styla Backoffice returns all products, even those not matching your search query, please simply save the module settings in OXID admin panel in: Extensions > Modules > Styla > Settings > SAVE. The search behaviour should then go back to normal and return only products matching your query.
 
+## SEO Content from Styla's SEO API
+
+The module uses data from Styla's SEO API to:
+* generate tags like: meta tags including `<title>`, canonical link, og:tags, static content inserted into <body>, `robots` instructions
+* insert these tags accordingly into HTML of the template the page with Styla content uses
+  
+This is done to provide search engine bots with data to crawl and index all Styal URLs, which are in fact a Single-Page-Application.
+
+Once you install and configure the module, please open source of the page on which your Styla content is embedded and check if none of the tags mentioned below are duplicated. In case `robots`or `link rel="canonical"` or any other are in the HTML twice, make sure to remove the original ones coming from your default template. Otherwise search engine bots might not be able to crawl all the Styla content or crawl it incorrectly. 
+
+You can finde more information on the SEO API on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961486/SEO+API+and+Sitemaps+Integration)
+
 ## Database fields used by the module
 
 The following database fields of the standard OXID shop system are being
