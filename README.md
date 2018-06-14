@@ -171,6 +171,10 @@ The process of setting up your Content Hub(s) usually goes as follows:
 
 ## Release Notes
 
+### V1.7.1
+- Do not show empty categories at the /category/-endpoint
+- Locale-Parameter for Productlinks
+
 ### V1.7.0
 - Extension: Product URL for each picture in search
 - Bugfix: Product API Error-Handling
