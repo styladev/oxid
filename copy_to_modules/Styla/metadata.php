@@ -52,6 +52,7 @@ $aModule = array(
         array('name' => 'styla_feed_brand', 'type' => 'select', 'value' => 'none', 'group' => 'styla_feed', 'constraints' => 'none|oxmanufacturer|oxvendor', 'position' => 12),
         array('name' => 'styla_feed_vat_showlabel', 'type' => 'bool', 'value' => '1', 'group' => 'styla_feed', 'constraints' => '', 'position' => 13),
         array('name' => 'styla_feed_show_variant_urls', 'type' => 'bool', 'value' => '0', 'group' => 'styla_feed', 'constraints' => '', 'position' => 14),
+        array('name' => 'styla_feed_no_empty_categories', 'type' => 'bool', 'value' => '0', 'group' => 'styla_feed', 'constraints' => '', 'position' => 15),
 
     ),
     'events'      => array(
