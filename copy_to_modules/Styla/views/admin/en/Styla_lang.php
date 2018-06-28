@@ -34,4 +34,5 @@ $aLang = array(
     'SHOP_MODULE_styla_feed_brand_oxvendor'            => 'Vendor (oxvendor)',
     'SHOP_MODULE_styla_feed_vat_showlabel'             => 'Show VAT inscription in product feed',
     'SHOP_MODULE_styla_feed_show_variant_urls'         => 'Use variant URLs',
+    'SHOP_MODULE_styla_feed_no_empty_categories'       => 'Don\'t show empty categories in feed',
 );
