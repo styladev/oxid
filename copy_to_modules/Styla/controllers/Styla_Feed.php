@@ -613,6 +613,10 @@ class Styla_Feed extends oxUBase
     {
         $aReturn = array();
         foreach ($oCatList as $oCategory) {
+            if (!$this->_hasCategoryArticles($oCategory)) {
+                continue;
+            }
+
             $aCategory = array();
             $aCategory['name'] = $this->_filterText($oCategory->oxcategories__oxtitle->value);
             $aCategory['id'] = $oCategory->getId();
@@ -728,5 +732,59 @@ class Styla_Feed extends oxUBase
         $currency->dec = '.'; // SMO-7 dec separator fixed to '.'
 
         return $currency;
+    }
+
+    /**
+     * Checks if the given category or any of its subcategories has articles
+     * Try to return early to reduce DB load
+     * The most load intensive part should be the loading of the subcategories
+     * Article counts are cached
+     *
+     * @see \oxUtilsCount::_getCatCache
+     * @param oxCategory $category Category to check for articles
+     * @return bool
+     */
+    protected function _hasCategoryArticles($category)
+    {
+        if (!$this->getConfig()->getConfigParam('styla_feed_no_empty_categories')) {
+            return true;
+        }
+
+        if ($category->getNrOfArticles()) {
+            return true;
+        }
+
+        foreach ($this->_getSubCategories($category->getId()) as $categoryId) {
+            if (oxRegistry::get("oxUtilsCount")->getCatArticleCount($categoryId)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns array of all subcategories of the given category
+     * Copied from \Styla_Articlelist::_getSubCategories
+     *
+     * @param string $categoryId
+     * @return array
+     */
+    protected function _getSubCategories($categoryId)
+    {
+        $db = oxDb::getDb();
+        $subCategoriesQuery = 'SELECT OXID FROM oxcategories WHERE OXPARENTID in (%s)';
+
+        $allCategories = array($categoryId);
+        $categories = array($categoryId);
+
+        do {
+            $categories = $db->quoteArray($categories);
+            $categories = $db->getCol(sprintf($subCategoriesQuery, implode(', ', $categories)));
+
+            $allCategories = array_merge($allCategories, $categories);
+        } while (count($categories));
+
+        return $allCategories;
     }
 }

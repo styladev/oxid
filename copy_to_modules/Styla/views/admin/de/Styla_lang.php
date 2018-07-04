@@ -34,4 +34,5 @@ $aLang = array(
     'SHOP_MODULE_styla_feed_brand_oxvendor'            => 'Lieferant (oxvendor)',
     'SHOP_MODULE_styla_feed_vat_showlabel'             => 'MwSt.-Aufschrift im Produktfeed anzeigen',
     'SHOP_MODULE_styla_feed_show_variant_urls'         => 'Varianten-URLs benutzen',
+    'SHOP_MODULE_styla_feed_no_empty_categories'       => 'Leere Kategorien im Feed nicht anzeigen',
 );
