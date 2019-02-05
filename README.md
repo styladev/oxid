@@ -171,6 +171,9 @@ The process of setting up your Content Hub(s) usually goes as follows:
 
 ## Release Notes
 
+### V1.7.2
+- added missing trailing slash for picture url
+
 ### V1.7.1
 - Do not show empty categories at the /category/-endpoint
 - Locale-Parameter for Productlinks
