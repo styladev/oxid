@@ -171,6 +171,9 @@ The process of setting up your Content Hub(s) usually goes as follows:
 
 ## Release Notes
 
+### V1.7.3
+- moved seo api html to allow html hydration
+
 ### V1.7.2
 - added missing trailing slash for picture url
 
