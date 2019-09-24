@@ -7,7 +7,7 @@ $aModule = array(
     'title'       => 'Styla',
     'description' => 'This module provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The module also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.',
     'thumbnail'   => 'logo.png',
-    'version'     => '1.7.3',
+    'version'     => '1.7.4',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
@@ -24,6 +24,7 @@ $aModule = array(
         'Styla_Articlelist' => 'Styla/models/Styla_Articlelist.php',
         'Styla_Feed'        => 'Styla/controllers/Styla_Feed.php',
         'Styla_Magazine'    => 'Styla/controllers/Styla_Magazine.php',
+        'Styla_Ajaxbasket'  => 'Styla/controllers/Styla_AjaxBasket.php',
     ),
     'templates'   => array(
         'Styla_JSON.tpl'     => 'Styla/views/tpl/Styla_JSON.tpl',
@@ -60,5 +61,10 @@ $aModule = array(
         'onDeactivate'  => array('Styla_Setup', 'uninstall'),
         'onSaveConfVar' => array('Styla_Setup', 'updateSeoUrls')
     ),
-    'blocks'      => array(),
+    'blocks'      => array(
+        array('template'    =>  'layout/base.tpl',
+            'block'         =>  'base_style',
+            'file'          =>  'blocks/base_style.tpl'),
+    ),
+
 );
