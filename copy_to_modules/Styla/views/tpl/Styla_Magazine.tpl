@@ -11,6 +11,8 @@
 
 [{capture append="oxidBlock_content"}]
     [{$styla_div}]
+
+    [{oxscript add=Styla_ajaxToBasket_baseURL = "[{ $oView->getBaseLink() }]" priority=12}]
 [{/capture}]
 
 [{include file="layout/page.tpl"}]
