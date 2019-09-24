@@ -171,6 +171,9 @@ The process of setting up your Content Hub(s) usually goes as follows:
 
 ## Release Notes
 
+### V1.7.4
+- Feature: Add to cart logic update
+
 ### V1.7.3
 - moved seo api html to allow html hydration
 
