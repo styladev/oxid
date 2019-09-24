@@ -68,8 +68,7 @@ class Styla_Magazine extends oxUBase
 
             $this->_aViewData['js_embed'] = $this->_oUtil->getJsEmbedCode($this->_sUsername, $this->_sSnippetURL);
             $this->_aViewData['css_embed'] = $this->_oUtil->getCssEmbedCode($this->_sUsername, $this->_sSnippetURL);
-            $this->_aViewData['styla_div'] = '<div id="stylaMagazine" data-rootpath="'.$magazinePath.'"></div>';
-            $this->_aViewData['noscript_content'] = $aContent['noscript_content'];
+            $this->_aViewData['styla_div'] = '<div id="stylaMagazine" data-rootpath="'.$magazinePath.'">'.$aContent['noscript_content'].'</div>';
             $this->_aViewData['meta_author'] = $aContent['meta']['author'];
             $this->_aViewData['meta'] = $this->_createHeaderHtml($aContent['meta']);
         }

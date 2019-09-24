@@ -233,7 +233,7 @@ class Styla_Feed extends oxUBase
             }
             $imgPath_target = $this->resize_imagepath . $oArticle->getId() . '_' . $imgName;
             $iCacheTtl = $oConfig->getConfigParam('styla_feed_ttl');
-            $resize_image_url = $oConfig->getPictureUrl(null) . 'stylafeed/' . $oArticle->getId() . '_' . $imgName;
+            $resize_image_url = rtrim($oConfig->getPictureUrl(null), '/') . '/stylafeed/' . $oArticle->getId() . '_' . $imgName;
 
             if (file_exists($imgPath_source) && (!file_exists($imgPath_target) || (time() - filemtime($imgPath_target) > $iCacheTtl))) { // regenerate resized images if older than cache ttl
                 $resize_image = $oUtilsPic->resizeImage($imgPath_source, $imgPath_target, $oConfig->getConfigParam('styla_image_width'), $oConfig->getConfigParam('styla_image_height'));

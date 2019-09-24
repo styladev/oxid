@@ -10,7 +10,6 @@
 [{/capture}]
 
 [{capture append="oxidBlock_content"}]
-    [{$noscript_content}]
     [{$styla_div}]
 [{/capture}]
 

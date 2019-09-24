@@ -2,7 +2,7 @@
 
 This module provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The module also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.
 
-The first diagram on [this page](https://styladocs.atlassian.net/wiki/spaces/CO/pages/9961481/Technical+Integration) should provide you an overview of what the module does and how it exchanges data with Styla.
+[This documentation page](https://docs.styla.com/) should provide you an overview of how Styla works in general. 
 
 ## Table of Contents  
 [Requirements](#requirements)   
@@ -170,6 +170,12 @@ The process of setting up your Content Hub(s) usually goes as follows:
 8. Go-live (you link to the Content Hub embedded on your production)
 
 ## Release Notes
+
+### V1.7.3
+- moved seo api html to allow html hydration
+
+### V1.7.2
+- added missing trailing slash for picture url
 
 ### V1.7.1
 - Do not show empty categories at the /category/-endpoint
