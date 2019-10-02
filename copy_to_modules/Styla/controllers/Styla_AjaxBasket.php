@@ -42,6 +42,9 @@ class Styla_AjaxBasket extends oxUBase
             $json->success = true;
         }
 
+        // Prevent the "new item added" popup when user visits the next page
+        oxRegistry::getSession()->deleteVariable('blAddedNewItem');
+
         $this->_setOutputHeaders();
         oxRegistry::getUtils()->showMessageAndExit(json_encode($json));
     }

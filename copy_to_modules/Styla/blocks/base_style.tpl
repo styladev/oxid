@@ -13,6 +13,10 @@
 [{* get productive mode *}]
 [{assign var="productive_mode" value=$oxcmp_shop->oxshops__oxproductive->value}]
 
+[{capture name="Styla_config"}]
+    Styla_ajaxToBasket_baseURL = "[{ $oView->getBaseLink() }]";
+[{/capture}]
+[{oxscript add=$smarty.capture.Styla_config priority=12}]
 
 [{* Include JS and CSS
 ---------------------------------------------------------------------------------------------------------------------*}]
