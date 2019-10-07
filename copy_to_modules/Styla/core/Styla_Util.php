@@ -98,7 +98,7 @@ class Styla_Util
         if (!$seoServerUrl) $seoServerUrl = self::SEO_URL;
 
         // Get the correct url for the server's url parameter
-        $path = oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI');
+        $path = strtok(oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI'), '?');
         $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . urlencode($path);
 
         $cache_key = preg_replace('/[\/:]/i', '-', 'stylaseo_' . $url);
