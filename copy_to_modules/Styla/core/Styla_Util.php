@@ -97,13 +97,9 @@ class Styla_Util
         $seoServerUrl = oxRegistry::getConfig()->getConfigParam('styla_seo_server');
         if (!$seoServerUrl) $seoServerUrl = self::SEO_URL;
 
-        $basedir = oxRegistry::getConfig()->getConfigParam('styla_seo_basedir');
-        if (!$basedir) $basedir = Styla_Setup::STYLA_MAGAZINE_BASEDIR;
-
         // Get the correct url for the server's url parameter
-        $request = oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI');
-        $request = substr($request, strpos($request, $basedir) + strlen($basedir) + 1);
-        $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . urlencode($request);
+        $path = oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI');
+        $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . urlencode($path);
 
         $cache_key = preg_replace('/[\/:]/i', '-', 'stylaseo_' . $url);
 

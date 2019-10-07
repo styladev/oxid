@@ -171,6 +171,9 @@ The process of setting up your Content Hub(s) usually goes as follows:
 
 ## Release Notes
 
+### V1.7.5
+- Removed data-rootpath to be able to have full path seo api calls
+
 ### V1.7.4
 - Feature: Add to cart logic update
 
