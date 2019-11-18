@@ -7,7 +7,7 @@ $aModule = array(
     'title'       => 'Styla',
     'description' => 'This module provides Styla magazine functionality to your OXID shop. It accepts all requests on the configured base directory and generates a dynamic response that includes the shop template containing the magazine JavaScript snippet (that can’t usually be crawled by search engines) and the crawlable HTML content including meta information. The module also provides an API with product data from OXID for you to use in Styla editor (backoffice) and callbacks for the users to add the products from the magazine to OXID cart.',
     'thumbnail'   => 'logo.png',
-    'version'     => '1.7.5',
+    'version'     => '2.0.0',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
@@ -32,8 +32,7 @@ $aModule = array(
     ),
     'settings'    => array(
         array('name' => 'styla_username', 'type' => 'str', 'value' => '', 'group' => 'styla_general', 'constraints' => '', 'position' => 1), //
-        array('name' => 'styla_api_url', 'type' => 'str', 'value' => 'http://live.styla.com', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
-        array('name' => 'styla_js_url', 'type' => 'str', 'value' => 'https://client-scripts.styla.com', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
+        array('name' => 'styla_engine_url', 'type' => 'str', 'value' => 'https://engine.styla.com/init.js', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
         array('name' => 'styla_seo_server', 'type' => 'str', 'value' => 'http://seoapi.styla.com', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
         array('name' => 'styla_seo_basedir', 'type' => 'str', 'value' => 'magazin', 'group' => 'styla_general', 'constraints' => '', 'position' => 4), //
         array('name' => 'styla_seo_cache_ttl', 'type' => 'str', 'value' => '3600', 'group' => 'styla_general', 'constraints' => '', 'position' => 5), //
