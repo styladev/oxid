@@ -2,7 +2,7 @@
 
 class Styla_Util
 {
-    const STYLA_URL = 'https://client-scripts.styla.com';
+    const STYLA_URL = 'https://engine.styla.com/init.js';
     const API_STYLA_URL = 'http://live.styla.com';
     const SEO_URL = 'http://seoapi.styla.com';
 
@@ -59,14 +59,13 @@ class Styla_Util
      * @param string $js_url
      * @return string
      */
-    public static function getJsEmbedCode($username, $js_url = null)
+    public static function getJsEmbedCode($js_url = null)
     {
         if (!$js_url) {
             $js_url = self::STYLA_URL;
         }
-        $url = preg_filter('/https?:(.+)/i', '$1', (rtrim($js_url, '/') . '/')) . 'scripts/clients/' . $username . '.js';
 
-        return '<script  type="text/javascript" src="' . $url . '" async></script>';
+        return '<script  type="text/javascript" src="' . $js_url . '" async></script>';
     }
 
     /**

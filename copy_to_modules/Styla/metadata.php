@@ -33,7 +33,7 @@ $aModule = array(
     'settings'    => array(
         array('name' => 'styla_username', 'type' => 'str', 'value' => '', 'group' => 'styla_general', 'constraints' => '', 'position' => 1), //
         array('name' => 'styla_api_url', 'type' => 'str', 'value' => 'http://live.styla.com', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
-        array('name' => 'styla_js_url', 'type' => 'str', 'value' => 'https://client-scripts.styla.com', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
+        array('name' => 'styla_js_url', 'type' => 'str', 'value' => 'https://engine.styla.com/init.js', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
         array('name' => 'styla_seo_server', 'type' => 'str', 'value' => 'http://seoapi.styla.com', 'group' => 'styla_general', 'constraints' => '', 'position' => 3), //
         array('name' => 'styla_seo_basedir', 'type' => 'str', 'value' => 'magazin', 'group' => 'styla_general', 'constraints' => '', 'position' => 4), //
         array('name' => 'styla_seo_cache_ttl', 'type' => 'str', 'value' => '3600', 'group' => 'styla_general', 'constraints' => '', 'position' => 5), //
