@@ -2,7 +2,7 @@
 
 class Styla_Util
 {
-    const STYLA_URL = 'https://client-scripts.styla.com';
+    const STYLA_URL = 'https://engine.styla.com/init.js';
     const API_STYLA_URL = 'http://live.styla.com';
     const SEO_URL = 'http://seoapi.styla.com';
 
@@ -59,31 +59,13 @@ class Styla_Util
      * @param string $js_url
      * @return string
      */
-    public static function getJsEmbedCode($username, $js_url = null)
+    public static function getJsEmbedCode($js_url = null)
     {
         if (!$js_url) {
             $js_url = self::STYLA_URL;
         }
-        $url = preg_filter('/https?:(.+)/i', '$1', (rtrim($js_url, '/') . '/')) . 'scripts/clients/' . $username . '.js?version=' . self::_getVersion($username);
 
-        return '<script  type="text/javascript" src="' . $url . '" async></script>';
-    }
-
-    /**
-     * Returns CSS element HTML code
-     *
-     * @param string $username
-     * @param string $css_url
-     * @return string
-     */
-    public static function getCssEmbedCode($username, $css_url = null)
-    {
-        if (!$css_url) {
-            $css_url = self::STYLA_URL;
-        }
-        $sCssUrl = preg_filter('/https?:(.+)/i', '$1', (rtrim($css_url, '/') . '/')) . 'styles/clients/' . $username . '.css?version=' . self::_getVersion($username);
-
-        return '<link rel="stylesheet" type="text/css" href="' . $sCssUrl . '">';
+        return '<script  type="text/javascript" src="' . $js_url . '" async></script>';
     }
 
     /**
@@ -191,41 +173,5 @@ class Styla_Util
         $curl->setOption('CURLOPT_USERPWD', null);
 
         return $curl->execute();
-    }
-
-    /**
-     * Requests and caches the current version from styla
-     *
-     * @param string $username
-     * @return string
-     */
-    protected static function _getVersion($username)
-    {
-        $sVersion = '';
-        $sCacheName = 'StylaVersionCache';
-
-        if ($aRes = oxRegistry::getUtils()->fromFileCache($sCacheName)) {
-            $iCacheTtl = 3600; // 1 hour expiration
-            if ($aRes['timestamp'] > time() - $iCacheTtl) {
-                $sVersion = $aRes['content'];
-            }
-        }
-        if ($sVersion == '') {
-            // get version from styla
-            $api_url = oxRegistry::getConfig()->getConfigParam('styla_api_url');
-            if (!$api_url) {
-                $api_url = self::API_STYLA_URL;
-            }
-
-            $url = $api_url . '/api/version/' . $username;
-
-            $sVersion = self::_getCurlResult($url);
-
-            // save to cache
-            $aData = array('timestamp' => time(), 'content' => $sVersion);
-            oxRegistry::getUtils()->toFileCache($sCacheName, $aData);
-        }
-
-        return $sVersion;
     }
 }
