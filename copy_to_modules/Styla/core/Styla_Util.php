@@ -2,9 +2,27 @@
 
 class Styla_Util
 {
-    const STYLA_URL = 'https://engine.styla.com/init.js';
+    const STYLA_URL = 'https://client-scripts.styla.com';
     const API_STYLA_URL = 'http://live.styla.com';
     const SEO_URL = 'http://seoapi.styla.com';
+
+    /**
+     * @var DatabaseInterface
+     */
+    protected $_oDB;
+
+    /**
+     * @var array
+     */
+    protected $_aMagazineUrls;
+
+    function __construct()
+    {
+        $this->_oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+        $this->_aMagazineUrls = array(
+            array('orig_url' => 'index.php?cl=Styla_Magazine', 'seo_action' => '')
+        );
+    }
 
     /**
      * Returns cache ID
@@ -15,7 +33,6 @@ class Styla_Util
     protected function _getCacheId($name)
     {
         $oConfig = oxRegistry::getConfig();
-
         return $name . '_' . $oConfig->getShopId() . '_' . oxRegistry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
     }
 
@@ -42,30 +59,55 @@ class Styla_Util
      * Saves data to cache
      *
      * @param string $name
-     * @param mixed  $aContent
+     * @param mixed $aContent
      * @return bool
      */
     public function saveToCache($name, $aContent)
     {
         $aData = array('timestamp' => time(), 'content' => $aContent);
-
         return oxRegistry::getUtils()->toFileCache($this->_getCacheId($name), $aData);
     }
 
     /**
+     * getJsEmbedCode
+     * -----------------------------------------------------------------------------------------------------------------
      * Returns JS element HTML code
      *
      * @param string $username
      * @param string $js_url
      * @return string
+     * @throws oxSystemComponentException
      */
-    public static function getJsEmbedCode($js_url = null)
+    public static function getJsEmbedCode($username, $js_url = null)
     {
         if (!$js_url) {
             $js_url = self::STYLA_URL;
         }
+        $url = preg_filter('/https?:(.+)/i', '$1', (rtrim($js_url, '/') . '/'))
+            . 'scripts/clients/' . $username . '.js?version=' . self::_getVersion($username);
 
-        return '<script  type="text/javascript" src="' . $js_url . '" async></script>';
+        return '<script  type="text/javascript" src="' . $url . '" async></script>';
+    }
+
+    /**
+     * getCssEmbedCode
+     * -----------------------------------------------------------------------------------------------------------------
+     * Returns CSS element HTML code
+     *
+     * @param string $username
+     * @param string $css_url
+     * @return string
+     * @throws oxSystemComponentException
+     */
+    public static function getCssEmbedCode($username, $css_url = null)
+    {
+        if (!$css_url) {
+            $css_url = self::STYLA_URL;
+        }
+        $sCssUrl = preg_filter('/https?:(.+)/i', '$1', (rtrim($css_url, '/') . '/'))
+            . 'styles/clients/' . $username . '.css?version=' . self::_getVersion($username);
+
+        return '<link rel="stylesheet" type="text/css" href="' . $sCssUrl . '">';
     }
 
     /**
@@ -81,6 +123,11 @@ class Styla_Util
 
         // Get the correct url for the server's url parameter
         $path = strtok(oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI'), '?');
+        //check if we have a path from seo and stylapaths
+        if(oxRegistry::getConfig()->getRequestParameter('path')){
+            $path = oxRegistry::getConfig()->getRequestParameter('path');
+        }
+        
         $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . urlencode($path);
 
         $cache_key = preg_replace('/[\/:]/i', '-', 'stylaseo_' . $url);
@@ -91,7 +138,8 @@ class Styla_Util
                 if ($arr) {
                     $this->saveToCache($cache_key, $arr);
                 }
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 echo 'ERROR: ' . $e->getMessage();
 
                 return false;
@@ -102,10 +150,13 @@ class Styla_Util
     }
 
     /**
+     * _fetchSeoData
+     * -----------------------------------------------------------------------------------------------------------------
      * Adds meta properties to the given array and returns it
      *
      * @param string $url
      * @return array
+     * @throws oxSystemComponentException
      */
     protected function _fetchSeoData($url)
     {
@@ -125,7 +176,8 @@ class Styla_Util
                         && in_array($tag->attributes->name, array('description', 'keywords'), true)
                     ) {
                         $ret[$tag->attributes->name] = $tag->attributes->content;
-                    } else {
+                    }
+                    else {
                         $ret['meta'][] = $tag;
                         if (isset($tag->attributes->name)
                             && in_array($tag->attributes->name, array('canonical', 'author'), true)
@@ -133,7 +185,8 @@ class Styla_Util
                             $ret['meta'][$tag->attributes->name] = $tag->attributes->content;
                         }
                     }
-                } elseif ($tag->tag === 'title') {
+                }
+                elseif ($tag->tag === 'title') {
                     $ret['page_title'] = $tag->content;
                 }
             }
@@ -151,14 +204,17 @@ class Styla_Util
     }
 
     /**
+     * _getCurlResult
+     * -----------------------------------------------------------------------------------------------------------------
      * Helper method: returns StylaSEO_Curl result for given URL
      *
      * @param string $url
      * @return string
+     * @throws oxSystemComponentException
      */
     protected static function _getCurlResult($url)
     {
-        $curl = oxNew('Styla_Curl');
+        $curl = oxNew('oxCurl');
         $curl->setUrl($url);
         $curl->setOption('CURLOPT_POST', 0);
         $curl->setOption('CURLOPT_HEADER', 0);
@@ -173,5 +229,108 @@ class Styla_Util
         $curl->setOption('CURLOPT_USERPWD', null);
 
         return $curl->execute();
+    }
+
+    /**
+     * _getVersion
+     * -----------------------------------------------------------------------------------------------------------------
+     * Requests and caches the current version from styla
+     *
+     * @param string $username
+     * @return string
+     * @throws oxSystemComponentException
+     */
+    protected static function _getVersion($username)
+    {
+        $sVersion = '';
+        $sCacheName = 'StylaVersionCache';
+
+        if ($aRes = oxRegistry::getUtils()->fromFileCache($sCacheName)) {
+            $iCacheTtl = 3600; // 1 hour expiration
+            if ($aRes['timestamp'] > time() - $iCacheTtl) {
+                $sVersion = $aRes['content'];
+            }
+        }
+        if ($sVersion == '') {
+            // get version from styla
+            $api_url = oxRegistry::getConfig()->getConfigParam('styla_api_url');
+            if (!$api_url) {
+                $api_url = self::API_STYLA_URL;
+            }
+
+            $url = $api_url . '/api/version/' . $username;
+
+            $sVersion = self::_getCurlResult($url);
+
+            // save to cache
+            $aData = array('timestamp' => time(), 'content' => $sVersion);
+            oxRegistry::getUtils()->toFileCache($sCacheName, $aData);
+        }
+
+        return $sVersion;
+    }
+
+    /**
+     * deleteStylaSeo
+     * -----------------------------------------------------------------------------------------------------------------
+     * function to remove the SEO entry of the specified oxid
+     *
+     * @param string $sOxid
+     * @param int    $iLang
+     */
+    public function deleteStylaSeo($sOxid,$iLang = null)
+    {
+        $aParams = [$sOxid, oxRegistry::getConfig()->getShopId()];
+        $sQuery = 'Delete from oxseo where oxobjectid = ? and oxshopid = ?';
+        if($iLang > -1 ){
+            $aParams[] = $iLang;
+            $sQuery.= ' and OXLANG = ?';
+        }
+        $this->_oDB->execute($sQuery,$aParams);
+    }
+
+    /**
+     * addStylaSeo
+     * -----------------------------------------------------------------------------------------------------------------
+     * Function to save the SEO data in the Database
+     *
+     * @param $sOxid
+     * @param $sBaseDir
+     * @param $iLang
+     */
+    public function addStylaSeo($sOxid, $sBaseDir, $iLang,$sUser)
+    {
+        $sShopid = oxRegistry::getConfig()->getShopId();
+        $aLanguages = oxRegistry::getLang()->getLanguageArray();
+        $defaultLang = oxRegistry::getConfig()->getConfigParam('sDefaultLang');
+        foreach ($this->_aMagazineUrls as $aURL) {
+            foreach ($aLanguages as $oLang) {
+                $sLangPrefix = '';
+                if ($oLang->id != $defaultLang) {
+                    $sLangPrefix = $oLang->abbr . '/';
+                }
+                $sURL = $sLangPrefix . rtrim($sBaseDir, '/') . '/' . $aURL['seo_action'];
+                if ($oLang->id == $iLang) {
+                    oxRegistry::get('oxSeoEncoder')->addSeoEntry(
+                        $sOxid, $sShopid, $oLang->id, $aURL['orig_url'].'&user='.$sUser, $sURL, 'static', 0
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * updateStylaSeo
+     * -----------------------------------------------------------------------------------------------------------------
+     * Function witch deletes the old SEO entry for the oxid and add the new values
+     *
+     * @param $sOxid
+     * @param $sPath
+     * @param $iLang
+     */
+    public function updateStylaSeo($sOxid,$sPath,$iLang,$sUser)
+    {
+        $this->deleteStylaSeo($sOxid,$iLang);
+        $this->addStylaSeo($sOxid,$sPath,$iLang,$sUser);
     }
 }

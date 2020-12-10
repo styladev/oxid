@@ -6,6 +6,7 @@
 
 [{capture append="oxidBlock_pageHead"}]
     [{$js_embed}]
+    [{$css_embed}]
 [{/capture}]
 
 [{capture append="oxidBlock_content"}]
