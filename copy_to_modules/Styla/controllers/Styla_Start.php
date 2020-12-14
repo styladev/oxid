@@ -56,7 +56,6 @@ class Styla_Start extends Styla_Start_parent
             $_GET['path'] = '/';
             $aContent = $this->_StylaUtil->getRemoteContent($this->_sStylaUsername);
             $this->_aViewData['js_embed'] = $this->_StylaUtil->getJsEmbedCode($this->_sStylaJsUrl);
-            $this->_aViewData['css_embed'] = $this->_StylaUtil->getCssEmbedCode($this->_sStylaUsername, $this->_sStylaJsUrl);
             $this->_aViewData['styla_div'] = '<div id="stylaMagazine" data-styla-client="' . $this->_sStylaUsername . '">' . $aContent['noscript_content'] . '</div>';
             $this->_aViewData['is_startpage'] = true;
         }

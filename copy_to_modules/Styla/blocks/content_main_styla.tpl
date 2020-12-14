@@ -4,5 +4,4 @@
 [{/if}]
 
 [{$js_embed}]
-[{$css_embed}]
 [{$styla_div}]

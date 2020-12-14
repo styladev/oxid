@@ -87,27 +87,6 @@ class Styla_Util
     }
 
     /**
-     * getCssEmbedCode
-     * -----------------------------------------------------------------------------------------------------------------
-     * Returns CSS element HTML code
-     *
-     * @param string $username
-     * @param string $css_url
-     * @return string
-     * @throws oxSystemComponentException
-     */
-    public static function getCssEmbedCode($username, $css_url = null)
-    {
-        if (!$css_url) {
-            $css_url = self::STYLA_URL;
-        }
-        $sCssUrl = preg_filter('/https?:(.+)/i', '$1', (rtrim($css_url, '/') . '/'))
-            . 'styles/clients/' . $username . '.css?version=' . self::_getVersion($username);
-
-        return '<link rel="stylesheet" type="text/css" href="' . $sCssUrl . '">';
-    }
-
-    /**
      * Returns remote content based on currently called URL
      *
      * @param string $username
