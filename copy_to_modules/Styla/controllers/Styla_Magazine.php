@@ -18,7 +18,6 @@ class Styla_Magazine extends oxUBase
         $this->_oUtil = oxNew('Styla_Util');
         $this->_sUsername = oxRegistry::getConfig()->getRequestParameter('user');
         $this->_sSnippetURL = $this->getConfig()->getConfigParam('styla_prophet_url');
-        $this->_sSnippetURL = rtrim($this->_sSnippetURL, '/') . '/'; // make sure there is always (exactly 1) trailing slash
 
         if (empty($this->_sUsername)) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay("STYLA_SEO_ERROR_NOUSERNAME");

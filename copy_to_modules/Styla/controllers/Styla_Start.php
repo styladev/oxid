@@ -25,7 +25,6 @@ class Styla_Start extends Styla_Start_parent
             $this->_sStylaUsername = $oHomePath->styla_paths__stylauser->value;
         }
         $this->_sStylaJsUrl = $this->getConfig()->getConfigParam('styla_prophet_url');
-        $this->_sStylaJsUrl = rtrim($this->_sStylaJsUrl, '/') . '/'; // make sure there is always (exactly 1) trailing slash
     }
 
     /**
