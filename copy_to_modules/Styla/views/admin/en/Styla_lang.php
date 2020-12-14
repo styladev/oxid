@@ -18,7 +18,7 @@ $aLang = array(
 
     'SHOP_MODULE_GROUP_styla_general'                  => 'Styla Settings',
     'SHOP_MODULE_styla_username'                       => 'Styla/Amazine Username',
-    'SHOP_MODULE_styla_js_url'                         => 'JS Snippet URL',
+    'SHOP_MODULE_styla_prophet_url'                    => 'JS Snippet URL',
     'SHOP_MODULE_styla_seo_basedir'                    => 'Base directory',
     'SHOP_MODULE_styla_seo_cache_ttl'                  => 'Cache-lifetime (seconds)',
     'SHOP_MODULE_styla_seo_magazin_title'              => 'Magazine page title contains shop pre- and suffix',
@@ -35,4 +35,21 @@ $aLang = array(
     'SHOP_MODULE_styla_feed_vat_showlabel'             => 'Show VAT inscription in product feed',
     'SHOP_MODULE_styla_feed_show_variant_urls'         => 'Use variant URLs',
     'SHOP_MODULE_styla_feed_no_empty_categories'       => 'Don\'t show empty categories in feed',
+
+    'STYLA'                                            => 'Styla',
+    'Styla_Paths'                                      => 'Styla',
+    'Styla_Paths_new'                                  => 'New path for Styla',
+    'Styla_PathsList'                                  => 'Path settings',
+    'Styla_PathsTab'                                   => 'Settings',
+    'STYLA_PATHS_PATH'                                 => 'Path',
+    'STYLA_PATHS_PATHHELP'                             => 'Config for the styla path',
+    'STYLA_PATHS_USER'                                 => 'User',
+    'STYLA_PATHS_USERHELP'                             => 'Config of the user',
+    'STYLA_PATHS_LANG'                                 => 'Language',
+    'STYLA_PATHS_LANGHELP'                             => 'Language Config',
+    'STYLA_PATHS_HOME'                                 => 'Home',
+    'STYLA_PATHS_HOMEHELP'                             => 'Should the style content been displayed on the shop landing-page?',
+    'STYLA_PATHS_BASEDIR'                              => 'Basedirectory',
+    'STYLA_PATHS_BASEDIRHELP'                          => 'Is the directory a base directory and has sub-pages?',
+    
 );

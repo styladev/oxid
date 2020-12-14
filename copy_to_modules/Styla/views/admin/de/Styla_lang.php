@@ -18,7 +18,7 @@ $aLang = array(
 
     'SHOP_MODULE_GROUP_styla_general'                  => 'Styla Settings',
     'SHOP_MODULE_styla_username'                       => 'Styla/Amazine Username',
-    'SHOP_MODULE_styla_js_url'                         => 'JS Snippet URL',
+    'SHOP_MODULE_styla_prophet_url'                    => 'JS Snippet URL',
     'SHOP_MODULE_styla_seo_basedir'                    => 'Base directory',
     'SHOP_MODULE_styla_seo_cache_ttl'                  => 'Cache-Lebensdauer (Sekunden)',
     'SHOP_MODULE_styla_seo_magazin_title'              => 'Magazin-Seitentitel enthält Shop-Prä- und Suffix',
@@ -35,4 +35,21 @@ $aLang = array(
     'SHOP_MODULE_styla_feed_vat_showlabel'             => 'MwSt.-Aufschrift im Produktfeed anzeigen',
     'SHOP_MODULE_styla_feed_show_variant_urls'         => 'Varianten-URLs benutzen',
     'SHOP_MODULE_styla_feed_no_empty_categories'       => 'Leere Kategorien im Feed nicht anzeigen',
+
+    'STYLA'                                            => 'Styla',
+    'Styla_Paths'                                      => 'Styla',
+    'Styla_Paths_new'                                  => 'Neuen Pfad für Styla anlegen',
+    'Styla_PathsList'                                  => 'Pfadangaben',
+    'Styla_PathsTab'                                   => 'Einstellungen',
+    'STYLA_PATHS_PATH'                                 => 'Pfad',
+    'STYLA_PATHS_PATHHELP'                             => 'Angabe des Styla Pfades',
+    'STYLA_PATHS_USER'                                 => 'Benutzer',
+    'STYLA_PATHS_USERHELP'                             => 'Einstellungen des Benutzers',
+    'STYLA_PATHS_LANG'                                 => 'Sprache',
+    'STYLA_PATHS_LANGHELP'                             => 'SprachEinstellung',
+    'STYLA_PATHS_HOME'                                 => 'Startseite',
+    'STYLA_PATHS_HOMEHELP'                             => 'Soll der Styla Content auf der Startseite des Shops angezeigt werden?',
+    'STYLA_PATHS_BASEDIR'                              => 'Basisverzeichniss',
+    'STYLA_PATHS_BASEDIRHELP'                          => 'Ist das Verzeichniss ein Basisverzeichniss und hat Subseiten?',
+    
 );

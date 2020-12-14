@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<OX>
+    <OXMENU id="STYLA">
+        <MAINMENU id="Styla_Paths">
+            <SUBMENU id="Styla_PathsList" cl="Styla_PathsController" list="Styla_PathsListController">
+                <TAB id="Styla_PathsTab" cl="Styla_PathsTabController"/>
+                <BTN id="Styla_Paths_new" />
+            </SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+</OX>
