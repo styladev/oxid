@@ -99,11 +99,6 @@ class Styla_Util
 
         // Get the correct url for the server's url parameter
         $path = strtok(oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI'), '?');
-        //check if we have a path from seo and stylapaths
-        if(oxRegistry::getConfig()->getRequestParameter('path')){
-            $path = oxRegistry::getConfig()->getRequestParameter('path');
-        }
-        
         $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . urlencode($path);
 
         $cache_key = preg_replace('/[\/:]/i', '-', 'stylaseo_' . $url);
