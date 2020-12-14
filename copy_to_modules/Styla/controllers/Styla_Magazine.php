@@ -17,7 +17,7 @@ class Styla_Magazine extends oxUBase
         parent::__construct();
         $this->_oUtil = oxNew('Styla_Util');
         $this->_sUsername = oxRegistry::getConfig()->getRequestParameter('user');
-        $this->_sSnippetURL = $this->getConfig()->getConfigParam('styla_js_url');
+        $this->_sSnippetURL = $this->getConfig()->getConfigParam('styla_prophet_url');
         $this->_sSnippetURL = rtrim($this->_sSnippetURL, '/') . '/'; // make sure there is always (exactly 1) trailing slash
 
         if (empty($this->_sUsername)) {
@@ -74,7 +74,7 @@ class Styla_Magazine extends oxUBase
 
             $this->_aViewData['js_embed'] = $this->_oUtil->getJsEmbedCode($this->_sSnippetURL);
             $this->_aViewData['css_embed'] = $this->_oUtil->getCssEmbedCode($this->_sUsername, $this->_sSnippetURL);
-            $this->_aViewData['styla_div'] = '<div id="stylaMagazine">'.$aContent['noscript_content'].'</div>';
+            $this->_aViewData['styla_div'] = '<div id="stylaMagazine" data-styla-client="' . $this->_sUsername . '">'.$aContent['noscript_content'].'</div>';
             $this->_aViewData['meta_author'] = $aContent['meta']['author'];
             $this->_aViewData['meta'] = $this->_createHeaderHtml($aContent['meta']);
         }
