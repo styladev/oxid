@@ -99,11 +99,6 @@ class Styla_Util
 
         // Get the correct url for the server's url parameter
         $path = strtok(oxRegistry::get('oxUtilsServer')->getServerVar('REQUEST_URI'), '?');
-        //check if we have a path from seo and stylapaths
-        if(oxRegistry::getConfig()->getRequestParameter('path')){
-            $path = oxRegistry::getConfig()->getRequestParameter('path');
-        }
-        
         $url = rtrim($seoServerUrl, '/') . '/clients/' . $username . '?url=' . urlencode($path);
 
         $cache_key = preg_replace('/[\/:]/i', '-', 'stylaseo_' . $url);
@@ -205,6 +200,33 @@ class Styla_Util
         $curl->setOption('CURLOPT_USERPWD', null);
 
         return $curl->execute();
+    }
+
+    /**
+     * Returns meta tags HTML from given elements
+     *
+     * @param array $aMetaElements
+     * @return array
+     */
+    public function createMetaHeaderHtml($aMetaElements)
+    {
+        $aReturn = array();
+        foreach ($aMetaElements as $oElement) {
+            if (isset($oElement->tag) && $oElement->tag != "") {
+                $sHTML = '<' . $oElement->tag;
+                foreach ($oElement->attributes as $aKey => $aVal) {
+                    $sHTML .= ' ' . $aKey . '="' . $aVal . '"';
+                }
+                if (isset($oElement->content) && $oElement->content != "") {
+                    $sHTML .= '>' . $oElement->content . '</' . $oElement->tag . '>';
+                } else {
+                    $sHTML .= ' />';
+                }
+                array_push($aReturn, $sHTML);
+            }
+        }
+
+        return $aReturn;
     }
 
     /**

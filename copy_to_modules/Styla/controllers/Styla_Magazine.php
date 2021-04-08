@@ -18,7 +18,6 @@ class Styla_Magazine extends oxUBase
         $this->_oUtil = oxNew('Styla_Util');
         $this->_sUsername = oxRegistry::getConfig()->getRequestParameter('user');
         $this->_sSnippetURL = $this->getConfig()->getConfigParam('styla_prophet_url');
-        $this->_sSnippetURL = rtrim($this->_sSnippetURL, '/') . '/'; // make sure there is always (exactly 1) trailing slash
 
         if (empty($this->_sUsername)) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay("STYLA_SEO_ERROR_NOUSERNAME");
@@ -75,37 +74,10 @@ class Styla_Magazine extends oxUBase
             $this->_aViewData['js_embed'] = $this->_oUtil->getJsEmbedCode($this->_sSnippetURL);
             $this->_aViewData['styla_div'] = '<div id="stylaMagazine" data-styla-client="' . $this->_sUsername . '">'.$aContent['noscript_content'].'</div>';
             $this->_aViewData['meta_author'] = $aContent['meta']['author'];
-            $this->_aViewData['meta'] = $this->_createHeaderHtml($aContent['meta']);
+            $this->_aViewData['meta'] = $this->_oUtil->createMetaHeaderHtml($aContent['meta']);
         }
 
         return $this->_sThisTemplate;
-    }
-
-    /**
-     * Returns meta tags HTML from given elements
-     *
-     * @param array $aMetaElements
-     * @return array
-     */
-    protected function _createHeaderHtml($aMetaElements)
-    {
-        $aReturn = array();
-        foreach ($aMetaElements as $oElement) {
-            if (isset($oElement->tag) && $oElement->tag != "") {
-                $sHTML = '<' . $oElement->tag;
-                foreach ($oElement->attributes as $aKey => $aVal) {
-                    $sHTML .= ' ' . $aKey . '="' . $aVal . '"';
-                }
-                if (isset($oElement->content) && $oElement->content != "") {
-                    $sHTML .= '>' . $oElement->content . '</' . $oElement->tag . '>';
-                } else {
-                    $sHTML .= ' />';
-                }
-                array_push($aReturn, $sHTML);
-            }
-        }
-
-        return $aReturn;
     }
 
     /**

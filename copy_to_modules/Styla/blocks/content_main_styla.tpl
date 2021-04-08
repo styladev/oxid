@@ -3,5 +3,10 @@
     [{$smarty.block.parent}]
 [{/if}]
 
+[{capture append="oxidBlock_pageHead"}]
+    [{foreach from=$meta item=entry}]
+        [{$entry}]
+    [{/foreach}]
+[{/capture}]
 [{$js_embed}]
 [{$styla_div}]
