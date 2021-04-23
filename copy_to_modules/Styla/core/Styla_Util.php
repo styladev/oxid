@@ -203,6 +203,33 @@ class Styla_Util
     }
 
     /**
+     * Returns meta tags HTML from given elements
+     *
+     * @param array $aMetaElements
+     * @return array
+     */
+    public function createMetaHeaderHtml($aMetaElements)
+    {
+        $aReturn = array();
+        foreach ($aMetaElements as $oElement) {
+            if (isset($oElement->tag) && $oElement->tag != "") {
+                $sHTML = '<' . $oElement->tag;
+                foreach ($oElement->attributes as $aKey => $aVal) {
+                    $sHTML .= ' ' . $aKey . '="' . $aVal . '"';
+                }
+                if (isset($oElement->content) && $oElement->content != "") {
+                    $sHTML .= '>' . $oElement->content . '</' . $oElement->tag . '>';
+                } else {
+                    $sHTML .= ' />';
+                }
+                array_push($aReturn, $sHTML);
+            }
+        }
+
+        return $aReturn;
+    }
+
+    /**
      * deleteStylaSeo
      * -----------------------------------------------------------------------------------------------------------------
      * function to remove the SEO entry of the specified oxid

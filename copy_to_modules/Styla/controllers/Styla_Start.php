@@ -2,9 +2,7 @@
 
 class Styla_Start extends Styla_Start_parent
 {
-    /**
-     * @var object
-     */
+    /** @var Styla_Util */
     protected $_StylaUtil;
     protected $_sStylaUsername;
     protected $_sStylaJsUrl;
@@ -60,5 +58,19 @@ class Styla_Start extends Styla_Start_parent
         }
     }
 
+    /**
+     * getBanners
+     * -----------------------------------------------------------------------------------------------------------------
+     * SMO-111: Remove product teaser from start page if start page is provided by Styla
+     *
+     * @return oxActionList|oxActions[]|null
+     */
+    public function getBanners()
+    {
+        if (!empty($this->_sStylaUsername)) {
+            return null;
+        }
 
+        return parent::getBanners();
+    }
 }
