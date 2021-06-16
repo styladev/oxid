@@ -20,8 +20,8 @@ $aModule = array(
         'oxconfig'      => 'Styla/core/Styla_Config',
         'module_config' => 'Styla/controllers/admin/Styla_Module_Config',
         'oxseodecoder'  => 'Styla/core/Styla_Router',
-        'start'         => 'Styla/controllers/Styla_Start',
         'oxlang'        => 'Styla/core/Styla_Lang',
+        'oxshopcontrol' => 'Styla/core/Styla_ShopControl',
     ),
     'files'       => array(
         'Styla_Util'        => 'Styla/core/Styla_Util.php',
@@ -81,11 +81,6 @@ $aModule = array(
             'template'    =>  'layout/base.tpl',
             'block'         =>  'base_style',
             'file'          =>  'blocks/base_style.tpl'
-        ),
-        array(
-            'template'    =>  'layout/page.tpl',
-            'block'         =>  'content_main',
-            'file'          =>  'blocks/content_main_styla.tpl'
         ),
         array(
             'block'    => 'admin_bottomnaviitem',
