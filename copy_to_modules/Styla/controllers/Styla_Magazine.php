@@ -51,8 +51,9 @@ class Styla_Magazine extends oxUBase
     public function render()
     {
         parent::render();
-        $this->_aViewData['is_startpage'] = false;
-        
+        // Hide the breadcrumb on start page
+        $this->_aViewData['blHideBreadcrumb'] = (bool) oxRegistry::getConfig()->getGlobalParameter('StylaStart');
+
         if (!empty($this->_sUsername)) {
             $this->_sUsername = str_replace('${language}', oxRegistry::getLang()->getLanguageAbbr(), $this->_sUsername);
             $aContent = $this->_oUtil->getRemoteContent($this->_sUsername);
