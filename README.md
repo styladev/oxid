@@ -16,7 +16,7 @@ This module provides Styla magazine functionality to your OXID shop. It accepts 
 
 ## Requirements
 
-OXID version 5.1.1 or later.
+OXID version 5.x.
 
 Since OXID itself does not run on PHP7, we haven't tested on this PHP version.
 
