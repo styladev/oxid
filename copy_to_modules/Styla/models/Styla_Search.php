@@ -4,7 +4,7 @@ class Styla_Search extends oxSearch
 {
     protected $iActPage;
 
-    public function getStylaSearchArticles($sSearchParamForQuery = false, $pageNr = 1, $pageSize = 10, $sSortBy)
+    public function getStylaSearchArticles($sSearchParamForQuery = false, $pageNr = 1, $pageSize = 10, $sSortBy = false)
     {
         $this->iActPage = $pageNr - 1;
         $iNrOfCatArticles = $pageSize;
@@ -15,6 +15,9 @@ class Styla_Search extends oxSearch
         $sSelect = $this->_getSearchSelect($sSearchParamForQuery, false, false, false, $sSortBy);
         if ($sSelect) {
             $oArtList->selectString($sSelect);
+            // Replace the select fields until the first "from" with a count
+            $countQuery = preg_replace('/select (.*?) from/', 'select count(1) from', $sSelect);
+            $oArtList->setTotalCount((int) oxDb::getDb()->getOne($countQuery));
         }
 
         return $oArtList;

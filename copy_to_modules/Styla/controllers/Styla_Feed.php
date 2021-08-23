@@ -70,41 +70,36 @@ class Styla_Feed extends oxUBase
         $currPage = (int) oxRegistry::getConfig()->getRequestParameter('page');
         if (!$currPage)
             $currPage = 1;
-        $pageSize = oxRegistry::getConfig()->getRequestParameter('page_size');
+        $pageSize = (int) oxRegistry::getConfig()->getRequestParameter('page_size');
         if (!$pageSize)
-            $pageSize = $this->getConfig()->getConfigParam('styla_page_size');
+            $pageSize = (int) $this->getConfig()->getConfigParam('styla_page_size');
+        if (!$pageSize) {
+            $pageSize = 20;
+        }
         $nameFilter = oxRegistry::getConfig()->getRequestParameter('filter');
         $skuFilter = oxRegistry::getConfig()->getRequestParameter('sku');
         $categoryFilter = oxRegistry::getConfig()->getRequestParameter('category');
-        $cacheKey = 'stylafeed_all';
 
-        if ($nameFilter)
-            $cacheKey .= '_' . $nameFilter;
-        if ($skuFilter)
-            $cacheKey .= '_' . $skuFilter;
-        if ($categoryFilter)
-            $cacheKey .= '_' . $categoryFilter;
+        $cacheKey = "stylafeed_all_{$nameFilter}_{$skuFilter}_{$categoryFilter}_{$currPage}_{$pageSize}";
 
-        $cacheKey .= '_' . $currPage;
-
-        if (!$items = $this->oUtil->loadFromCache($cacheKey, 'feed')) {
+        if (!$data = $this->oUtil->loadFromCache($cacheKey, 'feed')) {
             if ($nameFilter) {
                 $oArtList = $this->_getSearchArticleList($nameFilter, $currPage, $pageSize);
             } else {
                 $oArtList = oxNew('Styla_Articlelist');
                 $oArtList->loadArticles($currPage, $pageSize, $skuFilter, $categoryFilter);
             }
-            $items = $this->_getArticleItems($oArtList);
-            $this->oUtil->saveToCache($cacheKey, $items);
+            $data = [
+                'ver'       => $this->oModule->getInfo('version'),
+                'page'      => $currPage,
+                'page_size' => $pageSize,
+                'count'     => $oArtList->getTotalCount(),
+                'products'  => $this->_getArticleItems($oArtList),
+            ];
+            $this->oUtil->saveToCache($cacheKey, $data);
         }
 
-        $this->aData['ver'] = $this->oModule->getInfo('version');
-        $this->aData['page'] = $currPage;
-        $this->aData['page_size'] = $pageSize;
-
-        $this->aData['count'] = count($items);
-        $this->aData['products'] = $items;
-
+        $this->aData = $data;
         $this->_aViewData['action'] = 'default';
     }
 
