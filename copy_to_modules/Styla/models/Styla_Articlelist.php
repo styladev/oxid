@@ -2,6 +2,9 @@
 
 class Styla_Articlelist extends oxArticleList
 {
+    /** @var int */
+    protected $totalCount = 0;
+
     /**
      * Loads all relevant articles into the current list object
      *
@@ -62,6 +65,8 @@ class Styla_Articlelist extends oxArticleList
         $selectString = $select . $join . $where . $orderBy;
         $this->_aSqlLimit[0] = $start;
         $this->_aSqlLimit[1] = $limit;
+
+        $this->setTotalCount((int) oxDb::getDb()->getOne("SELECT COUNT(1) FROM $articleTable $join $where"));
         $this->selectString($selectString);
     }
 
@@ -87,5 +92,21 @@ class Styla_Articlelist extends oxArticleList
         } while (count($categories));
 
         return $allCategories;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalCount()
+    {
+        return $this->totalCount;
+    }
+
+    /**
+     * @param int $totalCount
+     */
+    public function setTotalCount($totalCount)
+    {
+        $this->totalCount = $totalCount;
     }
 }
