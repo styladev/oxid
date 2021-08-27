@@ -12,7 +12,7 @@ $aModule = array(
                      .' The module also provides an API with product data from OXID for you to use in Styla editor (backoffice)'
                      .' and callbacks for the users to add the products from the magazine to OXID cart.',
     'thumbnail'   => 'logo.png',
-    'version'     => '2.0.1',
+    'version'     => '2.0.2',
     'author'      => 'norisk GmbH',
     'url'         => 'http://www.noriskshop.de',
     'email'       => 'info@noriskshop.de',
